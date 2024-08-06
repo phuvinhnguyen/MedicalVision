@@ -72,5 +72,9 @@ class Runner:
 
         trainer.fit(self.model)
 
+        output = trainer.test(self.model, self.test_dataset)
+
         self.model.model.push_to_hub(self.hf_repo_id, token=self.token)
         self.model_processor.push_to_hub(self.hf_repo_id, token=self.token)
+
+        return output

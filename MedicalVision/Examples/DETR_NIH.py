@@ -9,4 +9,6 @@ def run(hf_id, token=None, dataset={}):
         num_labels=8
     )
 
-    runner.fit()
+    output = runner.fit()
+    
+    return output

@@ -18,8 +18,8 @@ class GeneralDetectionModel(pl.LightningModule):
         self.lr_backbone = lr_backbone
         self.weight_decay = weight_decay
         self.id2label = id2label
-        self.train_dataloader = train_dataloader
-        self.val_dataloader = val_dataloader
+        self.train_data = train_dataloader
+        self.val_data = val_dataloader
 
     def forward(self, *args, **kwargs):
         return self.model(*args, **kwargs)
@@ -76,8 +76,8 @@ class GeneralDetectionModel(pl.LightningModule):
 
     def train_dataloader(self):
         # Placeholder for training DataLoader
-        return self.train_dataloader
+        return self.train_data
 
     def val_dataloader(self):
         # Placeholder for validation DataLoader
-        return self.val_dataloader
+        return self.val_data

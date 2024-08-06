@@ -1,5 +1,5 @@
 from torch.utils.data import DataLoader
-from ModelWrapper import GeneralDetectionModel
+from .ModelWrapper import GeneralDetectionModel
 from pytorch_lightning import Trainer
 from ...Dataset.Detection import EXISTING_DATASET
 from transformers import AutoModelForObjectDetection, AutoProcessor

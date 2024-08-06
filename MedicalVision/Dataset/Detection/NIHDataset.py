@@ -27,7 +27,7 @@ class NIHDataset(Dataset):
         image = transforms.ToTensor()(Image.open(data['image_path'])).repeat(3, 1, 1)
 
         return image, {
-            'bboxes': torch.tensor(bbox, dtype=torch.float),
+            'boxes': torch.tensor(bbox, dtype=torch.float),
             'class_labels': torch.tensor(label, dtype=torch.long),
         }
 

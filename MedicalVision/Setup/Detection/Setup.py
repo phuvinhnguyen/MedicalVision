@@ -71,11 +71,13 @@ class Runner:
                 max_steps=self.max_steps
             )
 
+        before_output = trainer.test(self.model, self.test_dataset)
+
         trainer.fit(self.model)
 
-        output = trainer.test(self.model, self.test_dataset)
+        after_output = trainer.test(self.model, self.test_dataset)
 
         self.model.model.push_to_hub(self.hf_repo_id, token=self.token)
         self.model_processor.push_to_hub(self.hf_repo_id, token=self.token)
 
-        return output
+        return before_output, after_output

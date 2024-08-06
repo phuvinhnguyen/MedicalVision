@@ -80,4 +80,4 @@ class Runner:
         self.model.model.push_to_hub(self.hf_repo_id, token=self.token)
         self.model_processor.push_to_hub(self.hf_repo_id, token=self.token)
 
-        return before_output, after_output
+        return trainer, before_output, after_output

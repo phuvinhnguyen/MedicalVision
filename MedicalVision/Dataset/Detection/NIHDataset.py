@@ -24,7 +24,7 @@ class NIHDataset(Dataset):
         bbox = torch.tensor(json.loads(data['bbox'])) * self.normalize_scale
 
         label = torch.tensor(json.loads(data['Label']))
-        image = transforms.ToTensor()(Image.open(data['image_path']))
+        image = transforms.ToTensor()(Image.open(data['image_path'])).repeat(3, 1, 1)
 
         return image, {
             'bboxes': torch.tensor(bbox, dtype=torch.float),

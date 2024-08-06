@@ -43,7 +43,7 @@ class GeneralDetectionModel(pl.LightningModule):
         loss, loss_dict = self.common_step(batch, batch_idx)
         self.log("training_loss", loss)
         for k, v in loss_dict.items():
-            self.log("train_" + k, v.item())
+            self.log("train_" + k, v.item(), prog_bar=True)
 
         return loss
 
@@ -51,7 +51,7 @@ class GeneralDetectionModel(pl.LightningModule):
         loss, loss_dict = self.common_step(batch, batch_idx)
         self.log("validation_loss", loss)
         for k, v in loss_dict.items():
-            self.log("validation_" + k, v.item())
+            self.log("validation_" + k, v.item(), prog_bar=True)
 
         return loss
 

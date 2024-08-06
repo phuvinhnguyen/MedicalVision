@@ -7,7 +7,7 @@ import torch
 import json
 
 default_data_path = os.path.join(
-    os.path.dirname(__file__), '../../../preprocess/Detection_NIH_1024_version_2.csv')
+    os.path.dirname(__file__), '../../preprocess/Detection_NIH_1024_version_2.csv')
 
 
 class NIHDataset(Dataset):

@@ -12,22 +12,21 @@ class GeneralDetectionModel(pl.LightningModule):
                  lr=5e-5,
                  lr_backbone=None,
                  weight_decay=0.0,
-                 id2label=None
+                 num_labels=1000,
                  ):
         super().__init__()
         self.model = model
         self.lr = lr
         self.lr_backbone = lr_backbone
         self.weight_decay = weight_decay
-        self.id2label = id2label
         self.train_data = train_dataloader
         self.val_data = val_dataloader
 
         # Initialize metrics
         self.map_metric = MeanAveragePrecision()
-        self.precision_metric = Precision(num_classes=len(id2label), average='macro')
-        self.recall_metric = Recall(num_classes=len(id2label), average='macro')
-        self.f1_metric = F1Score(num_classes=len(id2label), average='macro')
+        self.precision_metric = Precision(num_classes=num_labels, average='macro')
+        self.recall_metric = Recall(num_classes=num_labels, average='macro')
+        self.f1_metric = F1Score(num_classes=num_labels, average='macro')
 
     def forward(self, *args, **kwargs):
         return self.model(*args, **kwargs)

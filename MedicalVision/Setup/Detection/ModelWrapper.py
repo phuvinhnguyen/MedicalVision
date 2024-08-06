@@ -11,7 +11,6 @@ class GeneralDetectionModel(pl.LightningModule):
                  lr=5e-5,
                  lr_backbone=None,
                  weight_decay=0.0,
-                 num_labels=1000,
                  processor=None,
                  ):
         super().__init__()
@@ -25,6 +24,8 @@ class GeneralDetectionModel(pl.LightningModule):
 
         # Initialize metrics
         self.map_metric = MeanAveragePrecision()
+        self.prediction = []
+        self.labels = []
 
     def forward(self, *args, **kwargs):
         return self.model(*args, **kwargs)
@@ -119,9 +120,13 @@ class GeneralDetectionModel(pl.LightningModule):
         formatted_preds = self.format_predictions(results)
         formatted_labels = self.format_labels(labels)
 
-        print(formatted_labels)
-        print(formatted_preds)
+        self.prediction += formatted_preds
+        self.labels += formatted_labels
+    
+    def compute_and_reset(self):
+        self.map_metric.update(self.prediction, self.labels)
+        output = self.map_metric.compute()
+        self.prediction = []
+        self.labels = []
 
-        self.map_metric.update(formatted_preds, formatted_labels)
-
-        return formatted_preds, formatted_labels
+        return output

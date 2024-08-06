@@ -53,7 +53,6 @@ class Runner:
             self.train_dataset,
             self.val_dataset,
             lr=lr,
-            num_labels=num_labels,
             processor=self.model_processor
         )
 
@@ -72,11 +71,13 @@ class Runner:
                 max_steps=self.max_steps
             )
 
-        before_output = trainer.test(self.model, self.test_dataset)
+        trainer.test(self.model, self.test_dataset)
+        before_output = self.model.compute_and_reset()
 
         trainer.fit(self.model)
 
-        after_output = trainer.test(self.model, self.test_dataset)
+        trainer.test(self.model, self.test_dataset)
+        after_output = self.model.compute_and_reset()
 
         self.model.model.push_to_hub(self.hf_repo_id, token=self.token)
         self.model_processor.push_to_hub(self.hf_repo_id, token=self.token)

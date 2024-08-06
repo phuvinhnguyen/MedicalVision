@@ -12,6 +12,7 @@ class GeneralDetectionModel(pl.LightningModule):
                  lr_backbone=None,
                  weight_decay=0.0,
                  num_labels=1000,
+                 processor=None,
                  ):
         super().__init__()
         self.model = model
@@ -20,6 +21,7 @@ class GeneralDetectionModel(pl.LightningModule):
         self.weight_decay = weight_decay
         self.train_data = train_dataloader
         self.val_data = val_dataloader
+        self.processor = processor
 
         # Initialize metrics
         self.map_metric = MeanAveragePrecision()
@@ -57,24 +59,6 @@ class GeneralDetectionModel(pl.LightningModule):
             self.log("validation_" + k, v.item(), prog_bar=True)
 
         return loss
-    
-    def test_step(self, batch, batch_idx):
-        pixel_values = batch["pixel_values"]
-        pixel_mask = batch.get("pixel_mask", None)
-        labels = [{k: v.to(self.device) for k, v in t.items()} for t in batch["labels"]]
-
-        # Forward pass without labels to get predictions
-        outputs = self.model(pixel_values=pixel_values, pixel_mask=pixel_mask)
-        predictions = outputs.logits
-
-        # Prepare predictions and labels in the format expected by mAP metric
-        formatted_preds = self.format_predictions(predictions)
-        formatted_labels = self.format_labels(labels)
-
-        # Update metrics with the current batch
-        self.map_metric.update(formatted_preds, formatted_labels)
-
-        return formatted_preds, formatted_labels
 
     def configure_optimizers(self):
         # Set up parameter groups for optimization
@@ -122,3 +106,20 @@ class GeneralDetectionModel(pl.LightningModule):
             labels = label['labels'].cpu()  # Ground truth labels
             formatted_labels.append({"boxes": boxes, "labels": labels})
         return formatted_labels
+        
+    def test_step(self, batch, batch_idx):
+        pixel_values = batch["pixel_values"]
+        pixel_mask = batch.get("pixel_mask", None)
+        labels = [{k: v.to(self.device) for k, v in t.items()} for t in batch["labels"]]
+
+        # Forward pass without labels to get predictions
+        with torch.no_grad():
+            outputs = self.model(pixel_values=pixel_values, pixel_mask=pixel_mask)
+            results = self.processor.post_process_object_detection(outputs, threshold=0)
+            
+        formatted_preds = self.format_predictions(results)
+        formatted_labels = self.format_labels(labels)
+
+        self.map_metric.update(formatted_preds, formatted_labels)
+
+        return formatted_preds, formatted_labels

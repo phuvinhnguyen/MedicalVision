@@ -53,7 +53,8 @@ class Runner:
             self.train_dataset,
             self.val_dataset,
             lr=lr,
-            num_labels=num_labels
+            num_labels=num_labels,
+            processor=self.model_processor
         )
 
         self.max_epochs = max_epochs

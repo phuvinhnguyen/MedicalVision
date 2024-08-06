@@ -1,5 +1,7 @@
 import pytorch_lightning as pl
 import torch
+from torchmetrics.detection.mean_ap import MeanAveragePrecision
+from torchmetrics import Precision, Recall, F1Score
 
 
 class GeneralDetectionModel(pl.LightningModule):
@@ -20,6 +22,12 @@ class GeneralDetectionModel(pl.LightningModule):
         self.id2label = id2label
         self.train_data = train_dataloader
         self.val_data = val_dataloader
+
+        # Initialize metrics
+        self.map_metric = MeanAveragePrecision()
+        self.precision_metric = Precision(num_classes=len(id2label), average='macro')
+        self.recall_metric = Recall(num_classes=len(id2label), average='macro')
+        self.f1_metric = F1Score(num_classes=len(id2label), average='macro')
 
     def forward(self, *args, **kwargs):
         return self.model(*args, **kwargs)
@@ -54,6 +62,25 @@ class GeneralDetectionModel(pl.LightningModule):
             self.log("validation_" + k, v.item(), prog_bar=True)
 
         return loss
+    
+    def test_step(self, batch, batch_idx):
+        pixel_values = batch["pixel_values"]
+        pixel_mask = batch.get("pixel_mask", None)
+        labels = [{k: v.to(self.device) for k, v in t.items()} for t in batch["labels"]]
+
+        # Forward pass without labels to get predictions
+        outputs = self.model(pixel_values=pixel_values, pixel_mask=pixel_mask)
+        predictions = outputs.logits
+
+        # Prepare predictions and labels in the format expected by mAP metric
+        formatted_preds = self.format_predictions(predictions)
+        formatted_labels = self.format_labels(labels)
+
+        # Update metrics with the current batch
+        self.map_metric.update(formatted_preds, formatted_labels)
+        self.update_additional_metrics(formatted_preds, formatted_labels)
+
+        return formatted_preds, formatted_labels
 
     def configure_optimizers(self):
         # Set up parameter groups for optimization
@@ -81,3 +108,32 @@ class GeneralDetectionModel(pl.LightningModule):
     def val_dataloader(self):
         # Placeholder for validation DataLoader
         return self.val_data
+    
+    def format_predictions(self, predictions):
+        # Format predictions to match the expected format for metrics
+        formatted_preds = []
+        for pred in predictions:
+            boxes = pred['boxes'].cpu()  # Bounding boxes
+            scores = pred['scores'].cpu()  # Confidence scores
+            labels = pred['labels'].cpu()  # Predicted labels
+            formatted_preds.append({"boxes": boxes, "scores": scores, "labels": labels})
+        return formatted_preds
+
+    def format_labels(self, labels):
+        # Format labels to match the expected format for metrics
+        formatted_labels = []
+        for label in labels:
+            boxes = label['boxes'].cpu()  # Bounding boxes
+            labels = label['labels'].cpu()  # Ground truth labels
+            formatted_labels.append({"boxes": boxes, "labels": labels})
+        return formatted_labels
+
+    def update_additional_metrics(self, preds, labels):
+        # This function updates additional metrics (Precision, Recall, F1)
+        for pred, label in zip(preds, labels):
+            pred_labels = pred['labels']
+            true_labels = label['labels']
+
+            self.precision_metric.update(pred_labels, true_labels)
+            self.recall_metric.update(pred_labels, true_labels)
+            self.f1_metric.update(pred_labels, true_labels)

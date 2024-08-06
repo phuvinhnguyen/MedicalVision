@@ -103,7 +103,7 @@ class GeneralDetectionModel(pl.LightningModule):
         formatted_labels = []
         for label in labels:
             boxes = label['boxes'].cpu()  # Bounding boxes
-            labels = label['labels'].cpu()  # Ground truth labels
+            labels = label['class_labels'].cpu()  # Ground truth labels
             formatted_labels.append({"boxes": boxes, "labels": labels})
         return formatted_labels
         

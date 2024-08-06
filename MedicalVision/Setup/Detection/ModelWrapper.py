@@ -91,7 +91,6 @@ class GeneralDetectionModel(pl.LightningModule):
         # Format predictions to match the expected format for metrics
         formatted_preds = []
         for pred in predictions:
-            print(pred)
             boxes = pred['boxes'].cpu()  # Bounding boxes
             scores = pred['scores'].cpu()  # Confidence scores
             labels = pred['labels'].cpu()  # Predicted labels

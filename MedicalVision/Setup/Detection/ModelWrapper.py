@@ -119,6 +119,9 @@ class GeneralDetectionModel(pl.LightningModule):
         formatted_preds = self.format_predictions(results)
         formatted_labels = self.format_labels(labels)
 
+        print(formatted_labels)
+        print(formatted_preds)
+
         self.map_metric.update(formatted_preds, formatted_labels)
 
         return formatted_preds, formatted_labels

@@ -1,7 +1,6 @@
 import pytorch_lightning as pl
 import torch
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
-from torchmetrics import Precision, Recall, F1Score
 
 
 class GeneralDetectionModel(pl.LightningModule):
@@ -24,9 +23,6 @@ class GeneralDetectionModel(pl.LightningModule):
 
         # Initialize metrics
         self.map_metric = MeanAveragePrecision()
-        self.precision_metric = Precision(num_classes=num_labels, average='macro')
-        self.recall_metric = Recall(num_classes=num_labels, average='macro')
-        self.f1_metric = F1Score(num_classes=num_labels, average='macro')
 
     def forward(self, *args, **kwargs):
         return self.model(*args, **kwargs)
@@ -77,7 +73,6 @@ class GeneralDetectionModel(pl.LightningModule):
 
         # Update metrics with the current batch
         self.map_metric.update(formatted_preds, formatted_labels)
-        self.update_additional_metrics(formatted_preds, formatted_labels)
 
         return formatted_preds, formatted_labels
 
@@ -126,13 +121,3 @@ class GeneralDetectionModel(pl.LightningModule):
             labels = label['labels'].cpu()  # Ground truth labels
             formatted_labels.append({"boxes": boxes, "labels": labels})
         return formatted_labels
-
-    def update_additional_metrics(self, preds, labels):
-        # This function updates additional metrics (Precision, Recall, F1)
-        for pred, label in zip(preds, labels):
-            pred_labels = pred['labels']
-            true_labels = label['labels']
-
-            self.precision_metric.update(pred_labels, true_labels)
-            self.recall_metric.update(pred_labels, true_labels)
-            self.f1_metric.update(pred_labels, true_labels)

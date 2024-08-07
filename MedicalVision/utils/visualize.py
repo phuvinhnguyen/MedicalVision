@@ -70,6 +70,7 @@ def test_and_visualize_model(
     results = postprocessed_outputs[0]
 
     # Plot the results
+    print(results)
     plot_results(image, results['scores'], results['labels'], results['boxes'])
 
 # Example usage:

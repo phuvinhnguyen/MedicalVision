@@ -125,5 +125,9 @@ class Runner:
         results = self.model_processor.post_process_object_detection(outputs,
                                                                 target_sizes=[(1024, 1024)],
                                                                 threshold=0.9)[0]
+        
+        print(results)
 
         plot_results(ToPILImage()(image), results['scores'], results['labels'], results['boxes'])
+
+        return results, labels

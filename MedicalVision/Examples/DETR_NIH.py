@@ -10,8 +10,8 @@ def run(hf_id, token=None, dataset={}, do_not_train=False):
     )
 
     if do_not_train:
-        runner.run_example()
+        result, labels = runner.run_example()
+        return None, result, labels
     else:
         output = runner.fit()
-    
-    return output
+        return output

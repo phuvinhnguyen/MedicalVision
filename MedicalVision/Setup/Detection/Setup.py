@@ -93,11 +93,13 @@ class Runner:
 
         trainer.test(self.model, self.test_dataset)
         before_output = self.model.compute_and_reset()
+        self.run_example()
 
         trainer.fit(self.model)
 
         trainer.test(self.model, self.test_dataset)
         after_output = self.model.compute_and_reset()
+        self.run_example()
 
         self.model.model.push_to_hub(self.hf_repo_id, token=self.token)
         self.model_processor.push_to_hub(self.hf_repo_id, token=self.token)

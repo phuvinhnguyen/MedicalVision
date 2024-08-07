@@ -31,6 +31,7 @@ def test_and_visualize_model(
 
     # Load the image and corresponding target
     pixel_values, target = val_dataset[image_idx]
+    print(target)
     pixel_values = pixel_values.unsqueeze(0).to(device)
     model = model.to(device)
     print(f"Pixel values shape: {pixel_values.shape}")
@@ -41,10 +42,6 @@ def test_and_visualize_model(
     print("Outputs:", outputs.keys())
 
     def plot_results(pil_img, scores, labels, boxes):
-        print('scores:', scores)
-        print('labels:', labels)
-        print('boxes:', boxes)
-
         plt.figure(figsize=figsize)
         plt.imshow(pil_img)
         ax = plt.gca()
@@ -73,6 +70,7 @@ def test_and_visualize_model(
     results = postprocessed_outputs[0]
 
     # Plot the results
+    print(results)
     plot_results(image, results['scores'], results['labels'], results['boxes'])
 
 # Example usage:

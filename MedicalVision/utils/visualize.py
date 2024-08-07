@@ -32,6 +32,7 @@ def test_and_visualize_model(
     # Load the image and corresponding target
     pixel_values, target = val_dataset[image_idx]
     pixel_values = pixel_values.unsqueeze(0).to(device)
+    model = model.to(device)
     print(f"Pixel values shape: {pixel_values.shape}")
 
     # Forward pass to get class logits and bounding boxes
@@ -43,7 +44,7 @@ def test_and_visualize_model(
         print('scores:', scores)
         print('labels:', labels)
         print('boxes:', boxes)
-        
+
         plt.figure(figsize=figsize)
         plt.imshow(pil_img)
         ax = plt.gca()

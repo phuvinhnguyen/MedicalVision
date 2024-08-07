@@ -16,7 +16,7 @@ def run(hf_id,
 
     id2label = {0: "Atelectasis", 1: "Cardiomegaly", 2: "Effusion", 3: "Infiltrate", 4: "Mass", 5: "Nodule", 6: "Pneumonia", 7: "Pneumothorax"}
     processor = DetrImageProcessor.from_pretrained("facebook/detr-resnet-50")
-    dataset = get_loader(image_path, processor, annotations_file=annotations_file, device=device)
+    dataset = get_loader(image_path, processor, annotations_file=annotations_file)
     model = Detr(dataset['dataloader'][0], dataset['dataloader'][1], lr=lr, id2label=id2label)
 
     trainer = DetectionTrainer(model, processor, max_epochs=max_epochs)

@@ -57,6 +57,7 @@ class DetectionTrainer:
 
     def test(self, test_dataloader, test_dataset, visualize_first_sample=False):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model = self.model.to(device)
         evaluator = CocoEvaluator(coco_gt=test_dataset.coco, iou_types=["bbox"])
 
         print("Running evaluation...")

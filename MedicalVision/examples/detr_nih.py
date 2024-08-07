@@ -11,6 +11,7 @@ def run(hf_id,
         annotations_file='/kaggle/input/nih-dataset-coco-detection/mydataset/annotations.json',
         max_epochs=100,
         lr=1e-4,
+        index_test_dataset=2,
         ):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -20,15 +21,15 @@ def run(hf_id,
     model = Detr(dataset['dataloader'][0], dataset['dataloader'][1], lr=lr, id2label=id2label)
 
     trainer = DetectionTrainer(model, processor, max_epochs=max_epochs, device=device)
-    trainer.test(dataset['dataloader'][2], dataset['dataset'][2])
-    test_and_visualize_model(dataset['dataset'][2], model.model, processor, image_idx=1, image_dir=image_path, device=device)
+    trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
+    test_and_visualize_model(dataset['dataset'][index_test_dataset], model.model, processor, image_idx=1, image_dir=image_path, device=device)
 
     trainer.fit()
-    trainer.test(dataset['dataloader'][2], dataset['dataset'][2])
+    trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
 
     model.model.push_to_hub(hf_id, token=token)
     processor.push_to_hub(hf_id, token=token)
 
-    test_and_visualize_model(dataset['dataset'][2], model.model, processor, image_idx=1, image_dir=image_path, device=device)
+    test_and_visualize_model(dataset['dataset'][index_test_dataset], model.model, processor, image_idx=1, image_dir=image_path, device=device)
 
     return model

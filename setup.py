@@ -17,7 +17,8 @@ setup(
         "matplotlib>=3.3.4",  # Plotting library
         "opencv-python>=4.5.1.48",  # Computer vision library
         "lightning>=2.3.3",
-        "torchmetrics[detection]",
+        "coco-eval",
+        "funcy",
     ],
     package_data={
         'MedicalVision': ['preprocess/*'],

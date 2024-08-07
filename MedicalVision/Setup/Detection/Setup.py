@@ -131,5 +131,7 @@ class Runner:
                                                                 threshold=0.9)[0]
         
         plot_results(ToPILImage()(image), results['scores'], results['labels'], results['boxes'])
+        print(results)
+        print(labels)
 
         return results, labels

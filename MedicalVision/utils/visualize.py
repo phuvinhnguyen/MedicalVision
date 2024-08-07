@@ -40,6 +40,10 @@ def test_and_visualize_model(
     print("Outputs:", outputs.keys())
 
     def plot_results(pil_img, scores, labels, boxes):
+        print('scores:', scores)
+        print('labels:', labels)
+        print('boxes:', boxes)
+        
         plt.figure(figsize=figsize)
         plt.imshow(pil_img)
         ax = plt.gca()

@@ -20,6 +20,7 @@ def run(hf_id,
     model = Detr(dataset['dataloader'][0], dataset['dataloader'][1], lr=lr, id2label=id2label)
 
     trainer = DetectionTrainer(model, processor, max_epochs=max_epochs)
+    trainer.test(dataset['dataloader'][2], dataset['dataset'][2])
     test_and_visualize_model(dataset['dataset'][2], model.model, processor, image_idx=1, image_dir=image_path, device=device)
 
     trainer.fit()

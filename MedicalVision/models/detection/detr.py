@@ -34,7 +34,7 @@ class Detr(pl.LightningModule):
             revision="no_timm",
             num_labels=len(self.id2label),
             ignore_mismatched_sizes=True,
-        )
+        ).to(self.device)
 
     def forward(self, pixel_values, pixel_mask):
         """

@@ -40,7 +40,8 @@ def get_loader(
     batch_size=1,
     num_workers=0,
     splits=[.8, .5],
-    shuffle=True):
+    shuffle=True,
+    ):
     if annotations_file is not None:
         datasets = []
         for i, split in enumerate(splits):

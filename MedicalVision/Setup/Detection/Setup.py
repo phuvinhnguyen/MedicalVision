@@ -60,7 +60,7 @@ class Runner:
         self.train_dataset = DataLoader(
             self.train_data, collate_fn=processor, batch_size=batch_size)
         self.val_dataset = DataLoader(
-            self.val_dataset, collate_fn=processor, batch_size=batch_size)
+            self.val_data, collate_fn=processor, batch_size=batch_size)
         self.test_data = DataLoader(
             self.test_data, collate_fn=processor, batch_size=batch_size)
 

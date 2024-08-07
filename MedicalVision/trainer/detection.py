@@ -36,12 +36,14 @@ class DetectionTrainer:
                  model,
                  processor = None,
                  max_epochs: int=10,
-                 save_path: str=None
+                 save_path: str=None,
+                 device='cuda',
                  ) -> None:
         self.trainer = Trainer(
             max_epochs=max_epochs,
         )
-        self.model = model
+        self.device = device
+        self.model = model.to(device)
         self.save_path = save_path
         self.processor = processor
 

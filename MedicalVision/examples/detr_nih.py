@@ -19,7 +19,7 @@ def run(hf_id,
     dataset = get_loader(image_path, processor, annotations_file=annotations_file)
     model = Detr(dataset['dataloader'][0], dataset['dataloader'][1], lr=lr, id2label=id2label)
 
-    trainer = DetectionTrainer(model, processor, max_epochs=max_epochs)
+    trainer = DetectionTrainer(model, processor, max_epochs=max_epochs, device=device)
     trainer.test(dataset['dataloader'][2], dataset['dataset'][2])
     test_and_visualize_model(dataset['dataset'][2], model.model, processor, image_idx=1, image_dir=image_path, device=device)
 

@@ -11,7 +11,7 @@ from torchvision.transforms import ToPILImage
 COLORS = [[0.000, 0.447, 0.741], [0.850, 0.325, 0.098], [0.929, 0.694, 0.125],
           [0.494, 0.184, 0.556], [0.466, 0.674, 0.188], [0.301, 0.745, 0.933]]
 
-def plot_results(pil_img, scores, labels, boxes):
+def plot_results(pil_img, scores, labels, boxes, model=None):
     plt.figure(figsize=(16,10))
     plt.imshow(pil_img)
     ax = plt.gca()
@@ -19,7 +19,11 @@ def plot_results(pil_img, scores, labels, boxes):
     for score, label, (xmin, ymin, xmax, ymax),c  in zip(scores.tolist(), labels.tolist(), boxes.tolist(), colors):
         ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
                                    fill=False, color=c, linewidth=3))
-        text = f'{model.config.id2label[label]}: {score:0.2f}'
+        if model is not None:
+            label = model.config.id2label[label]
+        else:
+            label = int(label)
+        text = f'{label}: {score:0.2f}'
         ax.text(xmin, ymin, text, fontsize=15,
                 bbox=dict(facecolor='yellow', alpha=0.5))
     plt.axis('off')
@@ -61,7 +65,7 @@ class Runner:
             self.train_data, collate_fn=processor, batch_size=batch_size)
         self.val_dataset = DataLoader(
             self.val_data, collate_fn=processor, batch_size=batch_size)
-        self.test_data = DataLoader(
+        self.test_dataset = DataLoader(
             self.test_data, collate_fn=processor, batch_size=batch_size)
 
         self.model = GeneralDetectionModel(
@@ -126,8 +130,6 @@ class Runner:
                                                                 target_sizes=[(1024, 1024)],
                                                                 threshold=0.9)[0]
         
-        print(results)
-
         plot_results(ToPILImage()(image), results['scores'], results['labels'], results['boxes'])
 
         return results, labels

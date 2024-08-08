@@ -15,6 +15,7 @@ def run(hf_id,
         lr=1e-4,
         index_test_dataset=2,
         revision='no_timm',
+        train_full=True,
         ):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -22,6 +23,11 @@ def run(hf_id,
     processor = DetrImageProcessor.from_pretrained(pretrained_model_name_or_path)
     dataset = get_loader(image_path, processor, annotations_file=annotations_file)
     model = Detr(dataset['dataloader'][0], dataset['dataloader'][1], lr=lr, id2label=id2label, model_name=pretrained_model_name_or_path, revision=revision)
+
+    # Set all parameters trainable
+    if train_full:
+        for param in model.parameters():
+            param.requires_grad = True
 
     print(f'''Model state:
 - All parameter: {sum(p.numel() for p in model.parameters())}

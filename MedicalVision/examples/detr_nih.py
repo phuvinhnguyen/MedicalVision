@@ -48,11 +48,11 @@ def run(hf_id,
     trainer.fit()
     final_result = trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
 
-    validation_tracker = ''
-    training_tracker = ''
+    validation_tracker_epoch = ''
+    training_tracker_epoch = ''
     if trainer.tracker:
-        validation_tracker = '\n'.join([str(i) for i in trainer.tracker[0].validation])
-        training_tracker = '\n' + '\n'.join([str(i) for i in trainer.tracker[0].training])
+        validation_tracker_epoch = '\n'.join([str(i) for i in trainer.tracker[0].validation_epoch_end])
+        training_tracker_epoch = '\n' + '\n'.join([str(i) for i in trainer.tracker[0].training_epoch_end])
 
     commit_message = f'''---
 library_name: transformers
@@ -73,11 +73,13 @@ tags: []
 - lr: {lr}
 - max_epochs: {max_epochs}
 
-## Training process
-{training_tracker}
+## Logging
 
-## Validation process
-{validation_tracker}
+### Training process
+{training_tracker_epoch}
+
+### Validation process
+{validation_tracker_epoch}
 '''
     with open('./README.md', 'w') as wf:
         wf.write(commit_message)

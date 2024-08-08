@@ -30,11 +30,18 @@ def run(hf_id,
     trainer = DetectionTrainer(model, processor, max_epochs=max_epochs, device=device)
     initial_result = trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
     test_and_visualize_model(dataset['dataset'][index_test_dataset], model.model, processor, image_idx=1, image_dir=image_path, device=device)
+    print(initial_result)
 
     trainer.fit()
     final_result = trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
+    print(final_result)
 
-    commit_message = f'''## initial_result
+    commit_message = f'''---
+library_name: transformers
+tags: []
+---
+
+## initial_result
 {initial_result}
 ## final_result
 {final_result}

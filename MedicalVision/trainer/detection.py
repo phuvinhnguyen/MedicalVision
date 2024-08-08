@@ -78,6 +78,5 @@ class DetectionTrainer:
 
         evaluator.synchronize_between_processes()
         evaluator.accumulate()
-        print(evaluator.summarize())
 
-        return evaluator
+        return str(evaluator.summarize())

@@ -31,9 +31,9 @@ def run(hf_id,
     final_result = trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
 
     commit_message = f'''## initial_result
-{initial_result.summarize()}
+{initial_result}
 ## final_result
-{final_result.summarize()}
+{final_result}
 ## Config
 - dataset: NIH
 - original model: {pretrained_model_name_or_path}

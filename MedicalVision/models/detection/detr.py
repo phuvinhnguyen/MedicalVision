@@ -15,23 +15,24 @@ class Detr(pl.LightningModule):
                  lr_backbone=None,
                  weight_decay=1e-4,
                  model_name='facebook/detr-resnet-50',
+                 revision="no_timm",
                  ):
         super().__init__()
         self.train_data = train_dataloader
         self.val_data = eval_dataloader
         self.id2label = id2label
-        self._init_model(model_name)
+        self._init_model(model_name, revision)
         self.lr = lr
         self.lr_backbone = lr_backbone
         self.weight_decay = weight_decay
 
-    def _init_model(self, model_name):
+    def _init_model(self, model_name, revision):
         """
         Initialize DETR model.
         """
         self.model = DetrForObjectDetection.from_pretrained(
             model_name,
-            revision="no_timm",
+            revision=revision,
             num_labels=len(self.id2label),
             ignore_mismatched_sizes=True,
         ).to(self.device)

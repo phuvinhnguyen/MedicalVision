@@ -23,7 +23,14 @@ def run(hf_id,
     id2label = {0: "Atelectasis", 1: "Cardiomegaly", 2: "Effusion", 3: "Infiltrate", 4: "Mass", 5: "Nodule", 6: "Pneumonia", 7: "Pneumothorax"}
     processor = DetrImageProcessor.from_pretrained(pretrained_model_name_or_path)
     dataset = get_loader(image_path, processor, annotations_file=annotations_file, batch_size=batch_size)
-    model = Detr(dataset['dataloader'][0], dataset['dataloader'][1], lr=lr, id2label=id2label, model_name=pretrained_model_name_or_path, revision=revision)
+    model = Detr(
+        dataset['dataloader'][0],
+        dataset['dataloader'][1],
+        lr=lr,
+        id2label=id2label,
+        model_name=pretrained_model_name_or_path,
+        revision=revision
+        )
 
     # Set all parameters trainable
     if train_full:

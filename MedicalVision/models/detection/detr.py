@@ -85,7 +85,7 @@ class Detr(pl.LightningModule):
             },
             {
                 "params": [p for n, p in self.named_parameters() if "backbone" in n and p.requires_grad],
-                "lr": self.lr_backbone,
+                "lr": self.lr,
             },
         ]
         optimizer = torch.optim.AdamW(params, lr=self.lr, weight_decay=self.weight_decay)

@@ -23,6 +23,10 @@ def run(hf_id,
     dataset = get_loader(image_path, processor, annotations_file=annotations_file)
     model = Detr(dataset['dataloader'][0], dataset['dataloader'][1], lr=lr, id2label=id2label, model_name=pretrained_model_name_or_path, revision=revision)
 
+    print(f'''Model state:
+- All parameter: {sum(p.numel() for p in model.parameters())}
+- Trainable parameter: {sum(p.numel() for p in model.parameters() if p.requires_grad)}''')
+
     trainer = DetectionTrainer(model, processor, max_epochs=max_epochs, device=device)
     initial_result = trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
     test_and_visualize_model(dataset['dataset'][index_test_dataset], model.model, processor, image_idx=1, image_dir=image_path, device=device)

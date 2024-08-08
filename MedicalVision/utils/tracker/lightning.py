@@ -1,4 +1,5 @@
 from pytorch_lightning import Callback
+from copy import deepcopy
 
 class MetricTracker(Callback):
     def __init__(self):
@@ -17,7 +18,7 @@ class MetricTracker(Callback):
         dataloader_idx: int = 0,
     ) -> None:
         try:
-            self.validation_batch_end.append(outputs)
+            self.validation_batch_end.append(deepcopy(outputs))
         except:
             pass
 
@@ -25,16 +26,16 @@ class MetricTracker(Callback):
         self, trainer, pl_module, outputs, batch, batch_idx
     ) -> None:
         try:
-            self.training_batch_end.append(outputs)
+            self.training_batch_end.append(deepcopy(outputs))
         except:
             pass
 
     def on_validation_epoch_end(self, trainer, pl_module) -> None:
         elogs = trainer.logged_metrics
-        self.validation_epoch_end.append(elogs)
+        self.validation_epoch_end.append(deepcopy(elogs))
 
     def on_train_epoch_end(self, trainer, pl_module) -> None:
         elogs = trainer.logged_metrics
-        self.training_epoch_end.append(elogs)
+        self.training_epoch_end.append(deepcopy(elogs))
 
 

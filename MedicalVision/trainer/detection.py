@@ -57,7 +57,8 @@ class DetectionTrainer:
             self.tracker.append(MetricTracker())
         self.trainer = Trainer(
             max_epochs=max_epochs,
-            callbacks=self.tracker
+            callbacks=self.tracker,
+            log_every_n_steps=10,
         )
         self.device = device
         self.model = model.to(device)

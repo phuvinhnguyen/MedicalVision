@@ -1,7 +1,18 @@
 from pytorch_lightning import Trainer
 import torch
 from coco_eval import CocoEvaluator
+from contextlib import redirect_stdout
+import io
 from tqdm.notebook import tqdm
+
+def get_evaluation_summary(evaluator):
+    string_io = io.StringIO()
+    with redirect_stdout(string_io):
+        evaluator.summarize()
+    summary = string_io.getvalue()
+    string_io.close()
+
+    return summary
 
 def convert_to_xywh(boxes):
     xmin, ymin, xmax, ymax = boxes.unbind(1)
@@ -79,4 +90,4 @@ class DetectionTrainer:
         evaluator.synchronize_between_processes()
         evaluator.accumulate()
 
-        return str(evaluator.summarize())
+        return get_evaluation_summary(evaluator)

@@ -41,9 +41,9 @@ library_name: transformers
 tags: []
 ---
 
-## initial_result
+## Original result
 {initial_result}
-## final_result
+## After training result
 {final_result}
 ## Config
 - dataset: NIH

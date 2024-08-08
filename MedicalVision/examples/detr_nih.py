@@ -12,6 +12,7 @@ def run(hf_id,
         image_path='/kaggle/input/nih-dataset-coco-detection/mydataset/images',
         annotations_file='/kaggle/input/nih-dataset-coco-detection/mydataset/annotations.json',
         max_epochs=100,
+        batch_size=32,
         lr=1e-4,
         index_test_dataset=2,
         revision='no_timm',
@@ -21,7 +22,7 @@ def run(hf_id,
 
     id2label = {0: "Atelectasis", 1: "Cardiomegaly", 2: "Effusion", 3: "Infiltrate", 4: "Mass", 5: "Nodule", 6: "Pneumonia", 7: "Pneumothorax"}
     processor = DetrImageProcessor.from_pretrained(pretrained_model_name_or_path)
-    dataset = get_loader(image_path, processor, annotations_file=annotations_file)
+    dataset = get_loader(image_path, processor, annotations_file=annotations_file, batch_size=batch_size)
     model = Detr(dataset['dataloader'][0], dataset['dataloader'][1], lr=lr, id2label=id2label, model_name=pretrained_model_name_or_path, revision=revision)
 
     # Set all parameters trainable

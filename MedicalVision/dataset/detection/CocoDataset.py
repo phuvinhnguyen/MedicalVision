@@ -37,7 +37,7 @@ def get_loader(
     img_folder,
     processor,
     annotations_file=None,
-    batch_size=1,
+    batch_size=16,
     num_workers=0,
     splits=[.8, .5],
     shuffle=True,

@@ -9,8 +9,8 @@ from ..utils.uploadReadme import replace_readme_in_hf_repo
 def run(hf_id,
         token=None,
         pretrained_model_name_or_path='facebook/detr-resnet-50',
-        image_path='/kaggle/input/nih-dataset-coco-detection/mydataset/images',
-        annotations_file='/kaggle/input/nih-dataset-coco-detection/mydataset/annotations.json',
+        image_path='/kaggle/working/balloon/train',
+        annotations_file='/kaggle/working/balloon/train/custom_train.json',
         max_epochs=100,
         batch_size=32,
         lr=1e-4,
@@ -20,7 +20,7 @@ def run(hf_id,
         ):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    id2label = {0: "Atelectasis", 1: "Cardiomegaly", 2: "Effusion", 3: "Infiltrate", 4: "Mass", 5: "Nodule", 6: "Pneumonia", 7: "Pneumothorax"}
+    id2label = {0: 'balloon'}
     processor = DetrImageProcessor.from_pretrained(pretrained_model_name_or_path)
     dataset = get_loader(image_path, processor, annotations_file=annotations_file, batch_size=batch_size)
     model = Detr(
@@ -66,7 +66,7 @@ tags: []
 {final_result}```
 
 ## Config
-- dataset: NIH
+- dataset: Balloon
 - original model: {pretrained_model_name_or_path}
 - lr: {lr}
 - max_epochs: {max_epochs}

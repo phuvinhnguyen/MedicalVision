@@ -16,14 +16,18 @@ class MetricTracker(Callback):
         batch_idx,
         dataloader_idx: int = 0,
     ) -> None:
-        vacc = outputs['val_acc']
-        self.validation_batch_end.append(vacc)
+        try:
+            self.validation_batch_end.append(outputs)
+        except:
+            pass
 
     def on_train_batch_end(
         self, trainer, pl_module, outputs, batch, batch_idx
     ) -> None:
-        vacc = outputs['val_acc']
-        self.training_batch_end.append(vacc)
+        try:
+            self.training_batch_end.append(outputs)
+        except:
+            pass
 
     def on_validation_epoch_end(self, trainer, pl_module) -> None:
         elogs = trainer.logged_metrics

@@ -74,13 +74,7 @@ tags: []
 - max_epochs: {max_epochs}
 
 ## Logging
-
 ### Training process
-```
-{training_tracker_epoch}
-```
-
-### Validation process
 ```
 {validation_tracker_epoch}
 ```

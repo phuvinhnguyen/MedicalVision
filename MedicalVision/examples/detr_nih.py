@@ -23,13 +23,24 @@ def run(hf_id,
     model = Detr(dataset['dataloader'][0], dataset['dataloader'][1], lr=lr, id2label=id2label, model_name=pretrained_model_name_or_path, revision=revision)
 
     trainer = DetectionTrainer(model, processor, max_epochs=max_epochs, device=device)
-    trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
+    initial_result = trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
     test_and_visualize_model(dataset['dataset'][index_test_dataset], model.model, processor, image_idx=1, image_dir=image_path, device=device)
 
     trainer.fit()
-    trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
+    final_result = trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
 
-    model.model.push_to_hub(hf_id, token=token)
+    commit_message = f'''## initial_result
+{initial_result.summarize()}
+## final_result
+{final_result.summarize()}
+## Config
+- dataset: NIH
+- original model: {pretrained_model_name_or_path}
+- lr: {lr}
+- max_epochs: {max_epochs}
+'''
+
+    model.model.push_to_hub(hf_id, token=token, commit_message=commit_message)
     processor.push_to_hub(hf_id, token=token)
 
     test_and_visualize_model(dataset['dataset'][index_test_dataset], model.model, processor, image_idx=1, image_dir=image_path, device=device)

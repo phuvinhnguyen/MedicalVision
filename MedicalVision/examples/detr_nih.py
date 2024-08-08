@@ -42,9 +42,9 @@ tags: []
 ---
 
 ## Original result
-{initial_result}
+{initial_result.replace('Average', '\nAverage')}
 ## After training result
-{final_result}
+{final_result.replace('Average', '\nAverage')}
 ## Config
 - dataset: NIH
 - original model: {pretrained_model_name_or_path}

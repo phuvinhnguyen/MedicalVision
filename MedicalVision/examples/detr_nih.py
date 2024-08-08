@@ -76,10 +76,14 @@ tags: []
 ## Logging
 
 ### Training process
+```
 {training_tracker_epoch}
+```
 
 ### Validation process
+```
 {validation_tracker_epoch}
+```
 '''
     with open('./README.md', 'w') as wf:
         wf.write(commit_message)

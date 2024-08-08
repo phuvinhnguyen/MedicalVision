@@ -44,11 +44,15 @@ def run(hf_id,
     trainer = DetectionTrainer(model, processor, max_epochs=max_epochs, device=device)
     initial_result = trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
     test_and_visualize_model(dataset['dataset'][index_test_dataset], model.model, processor, image_idx=1, image_dir=image_path, device=device)
-    print(initial_result)
 
     trainer.fit()
     final_result = trainer.test(dataset['dataloader'][index_test_dataset], dataset['dataset'][index_test_dataset])
-    print(final_result)
+
+    validation_tracker = ''
+    training_tracker = ''
+    if trainer.tracker:
+        validation_tracker = '\n'.join([str(i) for i in trainer.tracker[0].validation])
+        training_tracker = '\n' + '\n'.join([str(i) for i in trainer.tracker[0].training])
 
     commit_message = f'''---
 library_name: transformers
@@ -58,14 +62,22 @@ tags: []
 ## Original result
 ```
 {initial_result}```
+
 ## After training result
 ```
 {final_result}```
+
 ## Config
 - dataset: NIH
 - original model: {pretrained_model_name_or_path}
 - lr: {lr}
 - max_epochs: {max_epochs}
+
+## Training process
+{training_tracker}
+
+## Validation process
+{validation_tracker}
 '''
     with open('./README.md', 'w') as wf:
         wf.write(commit_message)

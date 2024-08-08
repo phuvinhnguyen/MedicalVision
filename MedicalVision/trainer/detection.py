@@ -3,6 +3,7 @@ import torch
 from coco_eval import CocoEvaluator
 from contextlib import redirect_stdout
 import io
+from ..utils.tracker.lightning import MetricTracker
 from tqdm.notebook import tqdm
 
 def get_evaluation_summary(evaluator):
@@ -49,9 +50,14 @@ class DetectionTrainer:
                  max_epochs: int=10,
                  save_path: str=None,
                  device='cuda',
+                 local_tracker=True,
                  ) -> None:
+        self.tracker = []
+        if local_tracker:
+            self.tracker.append(MetricTracker())
         self.trainer = Trainer(
             max_epochs=max_epochs,
+            callbacks=self.tracker
         )
         self.device = device
         self.model = model.to(device)

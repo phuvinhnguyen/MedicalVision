@@ -30,7 +30,7 @@ def run(hf_id,
         train_dataset['dataloader'][0],
         valid_dataset['dataloader'][0],
         lr=lr,
-        id2label={k:v['name'] for k,v in train_dataset['dataset'][0].coco.cats},
+        id2label={k:v['name'] for k,v in train_dataset['dataset'][0].coco.cats.items()},
         model_name=pretrained_model_name_or_path,
         revision=revision
     )

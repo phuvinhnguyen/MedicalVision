@@ -54,7 +54,7 @@ def run(hf_id,
 
     validation_tracker_epoch = ''
     if trainer.trackers:
-        validation_tracker_epoch = '\n'.join([str(i) for i in trainer.tracker[0].validation_epoch_end])
+        validation_tracker_epoch = '\n'.join([str(i) for i in trainer.trackers[0].validation_epoch_end])
 
     commit_message = f'''---
 library_name: transformers

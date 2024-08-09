@@ -22,6 +22,8 @@ def split_train_test(annotations, train, test, split=0.8):
         
         images_with_annotations = funcy.lmap(lambda a: int(a['image_id']), annotations)
         images = funcy.lremove(lambda i: i['id'] not in images_with_annotations, images)
+        
+        print(f"There are {len(images)} in this annotation")
 
         x, y = train_test_split(images, train_size=split)
 

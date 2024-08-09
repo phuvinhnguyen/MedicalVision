@@ -1,4 +1,4 @@
-from ..trainer.detection import DetectionTrainer
+from ..trainer.detection.detection import DetectionTrainer
 from ..dataset.detection.CocoDataset import get_loader
 from ..models.detection.detr import Detr
 from ..utils.visualize import test_and_visualize_model

@@ -16,7 +16,7 @@ class DetectionTrainer(AbstractTrainer):
         self.max_epochs = max_epochs
 
     def fit(self):
-        trainer = Trainer(max_epochs=self.max_epochs, devices=self.device, callbacks=self.trackers)
+        trainer = Trainer(max_epochs=self.max_epochs, callbacks=self.trackers)
         trainer.fit(model=self.model, ckpt_path=self.save_path)
 
     def test(self, test_dataloader, test_dataset):

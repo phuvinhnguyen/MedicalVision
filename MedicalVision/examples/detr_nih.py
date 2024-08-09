@@ -28,7 +28,7 @@ def run(hf_id,
     test_dataset = get_loader(test_image_path, processor, annotations_file=test_annotations_file, batch_size=batch_size)
     model = Detr(
         train_dataset['dataloader'][0],
-        valid_dataset['dataloader'][1],
+        valid_dataset['dataloader'][0],
         lr=lr,
         id2label={k:v['name'] for k,v in train_dataset['dataset'][0].coco.cats},
         model_name=pretrained_model_name_or_path,

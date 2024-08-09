@@ -46,7 +46,7 @@ def plot_from_dataset(model,
 
     ground_truth = {
         'bbox': ground_truth['bbox'],
-        'category': ground_truth['category'],
+        'category': ground_truth['category_id'],
     }
 
     # Prediction

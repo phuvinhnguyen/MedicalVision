@@ -17,6 +17,8 @@ def run(hf_id,
         max_epochs=100,
         batch_size=32,
         lr=1e-4,
+        dropout_rate=0.1,
+        weight_decay=1e-4,
         revision='no_timm',
         train_full=True,
         ):
@@ -30,6 +32,8 @@ def run(hf_id,
         train_dataset['dataloader'][0],
         valid_dataset['dataloader'][0],
         lr=lr,
+        dropout_rate=dropout_rate,
+        weight_decay=weight_decay,
         id2label={k:v['name'] for k,v in train_dataset['dataset'][0].coco.cats.items()},
         model_name=pretrained_model_name_or_path,
         revision=revision
@@ -73,6 +77,8 @@ tags: []
 - dataset: NIH
 - original model: {pretrained_model_name_or_path}
 - lr: {lr}
+- dropout_rate: {dropout_rate}
+- weight_decay: {weight_decay}
 - max_epochs: {max_epochs}
 
 ## Logging

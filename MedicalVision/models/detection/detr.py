@@ -1,6 +1,7 @@
 import pytorch_lightning as pl
 from transformers import DetrForObjectDetection
 import torch
+from ...utils.model import change_dropout_rate
 
 class Detr(pl.LightningModule):
     """
@@ -14,6 +15,7 @@ class Detr(pl.LightningModule):
                  lr=5e-5,
                  lr_backbone=None,
                  weight_decay=1e-4,
+                 dropout_rate=0.1,
                  model_name='facebook/detr-resnet-50',
                  revision="no_timm",
                  ):
@@ -21,10 +23,12 @@ class Detr(pl.LightningModule):
         self.train_data = train_dataloader
         self.val_data = eval_dataloader
         self.id2label = id2label
-        self._init_model(model_name, revision)
         self.lr = lr
         self.lr_backbone = lr_backbone
         self.weight_decay = weight_decay
+        self.dropout_rate = dropout_rate
+
+        self._init_model(model_name, revision)
 
     def _init_model(self, model_name, revision):
         """
@@ -36,6 +40,8 @@ class Detr(pl.LightningModule):
             num_labels=len(self.id2label),
             ignore_mismatched_sizes=True,
         ).to(self.device)
+
+        change_dropout_rate(self.model, self.dropout_rate)
 
     def forward(self, pixel_values, pixel_mask):
         """

@@ -1,5 +1,8 @@
 from huggingface_hub import upload_file, HfApi
 
+def create_readme():
+    pass
+
 def replace_readme_in_hf_repo(
         local_readme_path,
         repo_id,

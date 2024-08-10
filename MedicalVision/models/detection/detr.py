@@ -31,7 +31,7 @@ class Detr(pl.LightningModule):
         self._init_model(model_name, revision)
     
     def push_to_hub(self, hf_repo_id, token, revision=None, **kwargs):
-        self.model.push_to_hub(hf_repo_id=hf_repo_id, token=token, revision=revision, **kwargs)
+        self.model.push_to_hub(hf_repo_id, token=token, revision=revision, **kwargs)
 
     def _init_model(self, model_name, revision):
         """

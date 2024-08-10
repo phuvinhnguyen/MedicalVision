@@ -14,9 +14,9 @@ class AbstractTrainer:
         self.device = device
         self.trackers = trackers
 
-    def push_to_hub(self, hf_repo_id, token):
-        self.model.push_to_hub(hf_repo_id=hf_repo_id, token=token)
+    def push_to_hub(self, hf_repo_id, token, revision=None):
+        self.model.push_to_hub(hf_repo_id=hf_repo_id, token=token, revision=revision)
         if self.processor is not None:
-            self.processor.push_to_hub(hf_repo_id=hf_repo_id, token=token)
+            self.processor.push_to_hub(hf_repo_id=hf_repo_id, token=token, revision=revision)
 
     

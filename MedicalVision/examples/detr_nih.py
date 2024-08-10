@@ -19,8 +19,9 @@ def run(hf_id,
         lr=1e-4,
         dropout_rate=0.1,
         weight_decay=1e-4,
-        revision='no_timm',
+        pull_revision='no_timm',
         train_full=True,
+        push_revision=None,
         ):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -36,7 +37,7 @@ def run(hf_id,
         weight_decay=weight_decay,
         id2label={k:v['name'] for k,v in train_dataset['dataset'][0].coco.cats.items()},
         model_name=pretrained_model_name_or_path,
-        revision=revision
+        revision=pull_revision
     )
 
     # Set all parameters trainable
@@ -90,8 +91,7 @@ tags: []
     with open('./README.md', 'w') as wf:
         wf.write(commit_message)
 
-    model.model.push_to_hub(hf_id, token=token, commit_message=commit_message)
-    processor.push_to_hub(hf_id, token=token)
+    trainer.push_to_hub(hf_id, token, revision=push_revision)
 
     replace_readme_in_hf_repo('./README.md', hf_id, token)
 

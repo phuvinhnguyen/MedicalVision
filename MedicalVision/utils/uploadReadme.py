@@ -7,6 +7,7 @@ def write_file_in_hf_repo(
         local_path,
         repo_id,
         hf_token,
+        desfilename="README.md",
         commit_message="Update README file",
         revision=None):
     try:
@@ -16,7 +17,7 @@ def write_file_in_hf_repo(
         # Upload the README.md file to the repository
         upload_file(
             path_or_fileobj=local_path,
-            path_in_repo="README.md",  # Specify the path in the repository
+            path_in_repo=desfilename,  # Specify the path in the repository
             repo_id=repo_id,
             commit_message=commit_message,
             token=hf_token,  # Use the provided token

@@ -98,6 +98,6 @@ tags: []
 
     trainer.push_to_hub(hf_id, token, revision=push_revision)
     write_file_in_hf_repo('./README.md', hf_id, token, revision=push_revision)
-    write_file_in_hf_repo(example_path, hf_id, token, revision=push_revision)
+    write_file_in_hf_repo(example_path, hf_id, token, revision=push_revision, desfilename='example.png')
 
     return model

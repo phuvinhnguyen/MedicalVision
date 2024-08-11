@@ -1,5 +1,4 @@
 import torchvision
-import os
 from torch.utils.data import DataLoader
 from ...utils import split_train_test
 

@@ -1,5 +1,5 @@
 from ..dataset.detection.CocoDataset import get_loader
-from ..models.detection.lightning import Detr
+from ..models.detection.detr import Detr
 from transformers import DetrImageProcessor
 import torch
 from ..trainer.detection.detection import DetectionTrainer

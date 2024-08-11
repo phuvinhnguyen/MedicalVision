@@ -79,6 +79,7 @@ tags: []
 - dropout_rate: {dropout_rate}
 - weight_decay: {weight_decay}
 - max_epochs: {max_epochs}
+- train samples: {len(train_dataset['dataset'][0])}
 
 ## Logging
 ### Training process

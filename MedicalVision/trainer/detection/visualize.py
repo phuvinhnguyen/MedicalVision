@@ -27,8 +27,8 @@ def plot_results(pil_img, prediction, ground_truth, id2label=None):
         ax.text(xmin, ymin, text, fontsize=15, bbox=dict(facecolor='yellow', alpha=0.5))
 
     plt.axis('off')
-    plt.show()
     plt.savefig('example.png')
+    plt.show()
 
 
 def plot_from_dataset(model,

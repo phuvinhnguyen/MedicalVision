@@ -4,7 +4,7 @@ from ..models.detection.detr import Detr
 from ..utils.visualize import test_and_visualize_model
 from transformers import DetrImageProcessor
 import torch
-from ..utils.uploadReadme import replace_readme_in_hf_repo
+from ..utils.uploadReadme import write_file_in_hf_repo
 
 def run(hf_id,
         token=None,
@@ -83,7 +83,7 @@ tags: []
     model.model.push_to_hub(hf_id, token=token, commit_message=commit_message)
     processor.push_to_hub(hf_id, token=token)
 
-    replace_readme_in_hf_repo('./README.md', hf_id, token)
+    write_file_in_hf_repo('./README.md', hf_id, token)
 
     test_and_visualize_model(dataset['dataset'][index_test_dataset], model.model, processor, image_idx=1, image_dir=image_path, device=device)
 

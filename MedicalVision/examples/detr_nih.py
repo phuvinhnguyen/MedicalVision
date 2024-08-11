@@ -3,7 +3,8 @@ from ..models.detection.detr import Detr
 from transformers import DetrImageProcessor
 import torch
 from ..trainer.detection.detection import DetectionTrainer
-from ..utils.uploadReadme import replace_readme_in_hf_repo
+from ..utils.uploadReadme import write_file_in_hf_repo
+from ..utils.model import set_all_params_to_trainable, change_dropout_rate, model_params
 
 def run(hf_id,
         token=None,
@@ -41,13 +42,9 @@ def run(hf_id,
     )
 
     # Set all parameters trainable
-    if train_full:
-        for param in model.parameters():
-            param.requires_grad = True
+    if train_full: set_all_params_to_trainable(model)
 
-    print(f'''Model state:
-- All parameter: {sum(p.numel() for p in model.parameters())}
-- Trainable parameter: {sum(p.numel() for p in model.parameters() if p.requires_grad)}''')
+    model_params(model)
 
     trainer = DetectionTrainer(model, processor, max_epochs=max_epochs, device=device)
 
@@ -56,6 +53,7 @@ def run(hf_id,
 
     trainer.fit()
     final_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
+    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path)
 
     validation_tracker_epoch = ''
     if trainer.trackers:
@@ -87,13 +85,17 @@ tags: []
 ```
 {validation_tracker_epoch}
 ```
+
+## Examples
+{train_dataset['examples']}
+
+![Example](./example.png)
 '''
     with open('./README.md', 'w') as wf:
         wf.write(commit_message)
 
     trainer.push_to_hub(hf_id, token, revision=push_revision)
+    write_file_in_hf_repo('./README.md', hf_id, token, revision=push_revision)
+    write_file_in_hf_repo('./example.png', hf_id, token, revision=push_revision)
 
-    replace_readme_in_hf_repo('./README.md', hf_id, token)
-
-    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path)
     return model

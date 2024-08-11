@@ -28,6 +28,7 @@ def plot_results(pil_img, prediction, ground_truth, id2label=None):
 
     plt.axis('off')
     plt.show()
+    plt.savefig('example.png')
 
 
 def plot_from_dataset(model,

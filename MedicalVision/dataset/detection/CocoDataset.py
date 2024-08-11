@@ -57,5 +57,6 @@ def get_loader(
 
     return {
         'dataset': datasets,
-        'dataloader': [DataLoader(i, batch_size=batch_size, collate_fn=collate_fn, shuffle=shuffle, num_workers=num_workers) for i in datasets]
+        'dataloader': [DataLoader(i, batch_size=batch_size, collate_fn=collate_fn, shuffle=shuffle, num_workers=num_workers) for i in datasets],
+        'examples': datasets[0][0][1]
     }

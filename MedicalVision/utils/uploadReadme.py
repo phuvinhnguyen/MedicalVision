@@ -3,31 +3,24 @@ from huggingface_hub import upload_file, HfApi
 def create_readme():
     pass
 
-def replace_readme_in_hf_repo(
-        local_readme_path,
+def write_file_in_hf_repo(
+        local_path,
         repo_id,
         hf_token,
-        commit_message="Update README file"):
-    """
-    Replace the README.md file in a Hugging Face repository.
-
-    Args:
-        local_readme_path (str): Path to the local README.md file.
-        repo_id (str): The repository identifier in the format "username/repo_name".
-        hf_token (str): Your Hugging Face authentication token.
-        commit_message (str): Commit message for the update. Default is "Update README file".
-    """
+        commit_message="Update README file",
+        revision=None):
     try:
         # Authenticate using the provided token
         api = HfApi(token=hf_token)
         
         # Upload the README.md file to the repository
         upload_file(
-            path_or_fileobj=local_readme_path,
+            path_or_fileobj=local_path,
             path_in_repo="README.md",  # Specify the path in the repository
             repo_id=repo_id,
             commit_message=commit_message,
-            token=hf_token  # Use the provided token
+            token=hf_token,  # Use the provided token
+            revision=revision,
         )
         print(f"README.md has been successfully updated in the repository '{repo_id}'.")
     except Exception as e:

@@ -1,5 +1,5 @@
 from ..dataset.detection.CocoDataset import get_loader
-from ..models.detection.detr import Detr
+from ..models.detection.lightning import Detr
 from transformers import DetrImageProcessor
 import torch
 from ..trainer.detection.detection import DetectionTrainer
@@ -23,6 +23,7 @@ def run(hf_id,
         pull_revision='no_timm',
         train_full=True,
         push_revision=None,
+        example_path='/kaggle/working/example.png',
         ):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -97,6 +98,6 @@ tags: []
 
     trainer.push_to_hub(hf_id, token, revision=push_revision)
     write_file_in_hf_repo('./README.md', hf_id, token, revision=push_revision)
-    write_file_in_hf_repo('./example.png', hf_id, token, revision=push_revision)
+    write_file_in_hf_repo(example_path, hf_id, token, revision=push_revision)
 
     return model

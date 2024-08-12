@@ -1,6 +1,6 @@
 from ..dataset.detection.CocoDataset import get_loader
-from ..models.detection.owlv2 import OwlV2
-from transformers import Owlv2ImageProcessor
+from ..models.detection.yolos import Yolos
+from transformers import YolosImageProcessor
 import torch
 from ..trainer.detection.detection import DetectionTrainer
 from ..utils.uploadReadme import write_file_in_hf_repo
@@ -8,7 +8,7 @@ from ..utils.model import set_all_params_to_trainable, model_params
 
 def run(hf_id,
         token=None,
-        pretrained_model_name_or_path='google/owlv2-base-patch16-ensemble',
+        pretrained_model_name_or_path='hustvl/yolos-tiny',
         train_image_path='/kaggle/input/nih-detection-dataset/train',
         train_annotations_file='/kaggle/input/nih-detection-dataset/annotations/train.json',
         valid_image_path='/kaggle/input/nih-detection-dataset/val',
@@ -21,17 +21,20 @@ def run(hf_id,
         dropout_rate=0.1,
         weight_decay=1e-4,
         pull_revision='no_timm',
+        do_train=True,
+        push_to_hub=False,
         train_full=True,
         push_revision=None,
         example_path='/kaggle/working/example.png',
+        visualize_threshold=0.1
         ):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    processor = Owlv2ImageProcessor.from_pretrained(pretrained_model_name_or_path)
+    processor = YolosImageProcessor.from_pretrained(pretrained_model_name_or_path)
     train_dataset = get_loader(train_image_path, processor, annotations_file=train_annotations_file, batch_size=batch_size)
     valid_dataset = get_loader(valid_image_path, processor, annotations_file=valid_annotations_file, batch_size=batch_size)
     test_dataset = get_loader(test_image_path, processor, annotations_file=test_annotations_file, batch_size=batch_size)
-    model = OwlV2(
+    model = Yolos(
         train_dataset['dataloader'][0],
         valid_dataset['dataloader'][0],
         lr=lr,
@@ -50,15 +53,14 @@ def run(hf_id,
     trainer = DetectionTrainer(model, processor, max_epochs=max_epochs, device=device)
 
     initial_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
-    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path)
+    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
 
-    trainer.fit()
+    if do_train: trainer.fit()
     final_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
-    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path)
+    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
 
     validation_tracker_epoch = ''
-    if trainer.trackers:
-        validation_tracker_epoch = '\n'.join([str(i) for i in trainer.trackers[0].validation_epoch_end])
+    if trainer.trackers: validation_tracker_epoch = '\n'.join([str(i) for i in trainer.trackers[0].validation_epoch_end])
 
     commit_message = f'''---
 library_name: transformers
@@ -96,8 +98,9 @@ tags: []
     with open('./README.md', 'w') as wf:
         wf.write(commit_message)
 
-    trainer.push_to_hub(hf_id, token, revision=push_revision)
-    write_file_in_hf_repo('./README.md', hf_id, token, revision=push_revision)
-    write_file_in_hf_repo(example_path, hf_id, token, revision=push_revision, desfilename='example.png')
+    if push_to_hub:
+        trainer.push_to_hub(hf_id, token, revision=push_revision)
+        write_file_in_hf_repo('./README.md', hf_id, token, revision=push_revision)
+        write_file_in_hf_repo(example_path, hf_id, token, revision=push_revision, desfilename='example.png')
 
     return model

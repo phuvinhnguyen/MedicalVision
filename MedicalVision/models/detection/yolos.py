@@ -1,8 +1,8 @@
-from transformers import YolosForObjectDetection, YolosImageProcessor
+from transformers import YolosForObjectDetection
 from .lightning import lightning_detection
 from ...utils.model import change_dropout_rate
 
-class Yolo(lightning_detection):
+class Yolos(lightning_detection):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         

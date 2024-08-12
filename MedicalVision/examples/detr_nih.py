@@ -26,6 +26,7 @@ def run(hf_id,
         train_full=True,
         push_revision=None,
         example_path='/kaggle/working/example.png',
+        visualize_threshold=0.1
         ):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -52,11 +53,11 @@ def run(hf_id,
     trainer = DetectionTrainer(model, processor, max_epochs=max_epochs, device=device)
 
     initial_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
-    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path)
+    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
 
     if do_train: trainer.fit()
     final_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
-    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path)
+    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
 
     validation_tracker_epoch = ''
     if trainer.trackers:

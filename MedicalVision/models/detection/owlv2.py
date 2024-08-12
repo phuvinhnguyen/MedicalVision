@@ -1,13 +1,13 @@
-from transformers import Owlv2ForObjectDetection
+from transformers import YolosForObjectDetection, YolosImageProcessor
 from .lightning import lightning_detection
 from ...utils.model import change_dropout_rate
 
-class OwlV2(lightning_detection):
+class Yolo(lightning_detection):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
     def _init_model(self, model_name, revision):
-        self.model = Owlv2ForObjectDetection.from_pretrained(
+        self.model = YolosForObjectDetection.from_pretrained(
             model_name,
             revision=revision,
             num_labels=len(self.id2label),

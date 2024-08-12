@@ -60,8 +60,7 @@ def run(hf_id,
     trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
 
     validation_tracker_epoch = ''
-    if trainer.trackers:
-        validation_tracker_epoch = '\n'.join([str(i) for i in trainer.trackers[0].validation_epoch_end])
+    if trainer.trackers: validation_tracker_epoch = '\n'.join([str(i) for i in trainer.trackers[0].validation_epoch_end])
 
     commit_message = f'''---
 library_name: transformers

@@ -25,7 +25,7 @@ def split_train_test(annotations, train, test, split=0.8):
         
         print(f"There are {len(images)} in this annotation")
 
-        x, y = train_test_split(images, train_size=split)
+        x, y = train_test_split(images, train_size=split, random_state=79)
 
         save_coco(train, x, filter_annotations(annotations, x), categories)
         save_coco(test,  y, filter_annotations(annotations, y), categories)

@@ -21,6 +21,8 @@ def run(hf_id,
         dropout_rate=0.1,
         weight_decay=1e-4,
         pull_revision='no_timm',
+        do_train=True,
+        push_to_hub=False,
         train_full=True,
         push_revision=None,
         example_path='/kaggle/working/example.png',
@@ -52,7 +54,7 @@ def run(hf_id,
     initial_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
     trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path)
 
-    trainer.fit()
+    if do_train: trainer.fit()
     final_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
     trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path)
 
@@ -96,8 +98,9 @@ tags: []
     with open('./README.md', 'w') as wf:
         wf.write(commit_message)
 
-    trainer.push_to_hub(hf_id, token, revision=push_revision)
-    write_file_in_hf_repo('./README.md', hf_id, token, revision=push_revision)
-    write_file_in_hf_repo(example_path, hf_id, token, revision=push_revision, desfilename='example.png')
+    if push_to_hub:
+        trainer.push_to_hub(hf_id, token, revision=push_revision)
+        write_file_in_hf_repo('./README.md', hf_id, token, revision=push_revision)
+        write_file_in_hf_repo(example_path, hf_id, token, revision=push_revision, desfilename='example.png')
 
     return model

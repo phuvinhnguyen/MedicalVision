@@ -27,7 +27,7 @@ class DetectionTrainer(AbstractTrainer):
             test_dataset
         )
     
-    def visualize(self, val_dataset, image_idx=1, image_dir=None, threshold=0.5):
+    def visualize(self, val_dataset, image_idx=1, image_dir=None, threshold=0.2):
         plot_from_dataset(
             self.model,
             val_dataset,

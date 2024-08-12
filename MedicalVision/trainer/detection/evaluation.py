@@ -53,11 +53,17 @@ def evaluate_model(
     print("Running evaluation...")
     for idx, batch in enumerate(tqdm(test_dataloader)):
         pixel_values = batch['pixel_values'].to(device)
-        pixel_mask = batch["pixel_mask"].to(device)
+        if "pixel_mask" in batch:
+            pixel_mask = batch["pixel_mask"].to(device)
+        else:
+            pixel_mask = None
         labels = [{k: v.to(device) for k, v in t.items()} for t in batch["labels"]]
         
         with torch.no_grad():
-            outputs = model(pixel_values=pixel_values, pixel_mask=pixel_mask)
+            if pixel_mask is None:
+                outputs = model(pixel_values=pixel_values)
+            else:
+                outputs = model(pixel_values=pixel_values, pixel_mask=pixel_mask)
 
             orig_target_sizes = torch.stack([target["orig_size"] for target in labels], dim=0)
             results = processor.post_process_object_detection(outputs, target_sizes=orig_target_sizes, threshold=0)

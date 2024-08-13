@@ -15,4 +15,21 @@ class Yolos(lightning_detection):
         ).to(self.device)
 
         change_dropout_rate(self.model, self.dropout_rate)
+
+    def forward(self, pixel_values, pixel_mask=None):
+        """
+        Forward pass of the model.
+        """
+        return self.model(pixel_values=pixel_values)
+    
+    def common_step(self, batch, batch_idx):
+        """
+        Common step for training and validation.
+        """
+        pixel_values = batch["pixel_values"]
+        labels = [{k: v.to(self.device) for k, v in t.items()} for t in batch["labels"]]
+
+        outputs = self.model(pixel_values=pixel_values, labels=labels)
+
+        return outputs.loss, outputs.loss_dict
         

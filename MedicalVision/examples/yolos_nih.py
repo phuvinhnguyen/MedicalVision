@@ -43,7 +43,7 @@ def run(hf_id,
         lr=lr,
         dropout_rate=dropout_rate,
         weight_decay=weight_decay,
-        id2label={k:v['name'] for k,v in train_dataset['dataset'][0].coco.cats.items()},
+        id2label={k-1:v['name'] for k,v in train_dataset['dataset'][0].coco.cats.items()},
         model_name=pretrained_model_name_or_path,
         revision=pull_revision
     )

@@ -34,6 +34,9 @@ def run(hf_id,
     train_dataset = get_loader(train_image_path, processor, annotations_file=train_annotations_file, batch_size=batch_size)
     valid_dataset = get_loader(valid_image_path, processor, annotations_file=valid_annotations_file, batch_size=batch_size)
     test_dataset = get_loader(test_image_path, processor, annotations_file=test_annotations_file, batch_size=batch_size)
+    
+    print({k:v['name'] for k,v in train_dataset['dataset'][0].coco.cats.items()})
+
     model = Yolos(
         train_dataset['dataloader'][0],
         valid_dataset['dataloader'][0],

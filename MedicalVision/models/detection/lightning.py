@@ -34,7 +34,7 @@ class lightning_detection(pl.LightningModule):
     def _init_model(self, model_name, revision):
         pass
 
-    def forward(self, pixel_values, pixel_mask):
+    def forward(self, pixel_values, pixel_mask=None):
         """
         Forward pass of the model.
         """

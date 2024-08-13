@@ -9,7 +9,8 @@ def get_collator(processor):
         labels = [item[1] for item in batch]
         batch = {}
         batch['pixel_values'] = encoding['pixel_values']
-        batch['pixel_mask'] = encoding['pixel_mask']
+        if "pixel_mask" in encoding:
+            batch['pixel_mask'] = encoding['pixel_mask']
         batch['labels'] = labels
         return batch
     return collate_fn

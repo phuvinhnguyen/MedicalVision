@@ -34,16 +34,14 @@ def run(hf_id,
     train_dataset = get_loader(train_image_path, processor, annotations_file=train_annotations_file, batch_size=batch_size)
     valid_dataset = get_loader(valid_image_path, processor, annotations_file=valid_annotations_file, batch_size=batch_size)
     test_dataset = get_loader(test_image_path, processor, annotations_file=test_annotations_file, batch_size=batch_size)
-    
-    print({k:v['name'] for k,v in train_dataset['dataset'][0].coco.cats.items()})
-    
+        
     model = Detr(
         train_dataset['dataloader'][0],
         valid_dataset['dataloader'][0],
         lr=lr,
         dropout_rate=dropout_rate,
         weight_decay=weight_decay,
-        id2label={k:v['name'] for k,v in train_dataset['dataset'][0].coco.cats.items()},
+        id2label={k-1:v['name'] for k,v in train_dataset['dataset'][0].coco.cats.items()},
         model_name=pretrained_model_name_or_path,
         revision=pull_revision
     )

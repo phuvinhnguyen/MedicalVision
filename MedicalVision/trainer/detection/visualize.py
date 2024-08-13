@@ -4,6 +4,8 @@ import os
 from PIL import Image
 
 def plot_results(pil_img, prediction, ground_truth, id2label=None):
+    print('mapping:', id2label)
+
     plt.figure(figsize=(16, 10))
     plt.imshow(pil_img)
     ax = plt.gca()

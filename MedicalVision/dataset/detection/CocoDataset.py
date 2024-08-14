@@ -41,7 +41,7 @@ class CocoDetection(torchvision.datasets.CocoDetection):
     def _load_image(self, id: int) -> Image.Image:
         path = self.coco.loadImgs(id)[0]["file_name"]
         if path.endswith(".dicom"):
-            image_array = pydicom.dcmread(path).pixel_array
+            image_array = pydicom.dcmread(os.path.join(self.root, path)).pixel_array
             return Image.fromarray(((image_array / np.max(image_array)) * 255).astype(np.uint8)).convert("RGB")
         else:
             return Image.open(os.path.join(self.root, path)).convert("RGB")

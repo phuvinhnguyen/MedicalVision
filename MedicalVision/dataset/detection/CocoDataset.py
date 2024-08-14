@@ -1,6 +1,10 @@
 import torchvision
 from torch.utils.data import DataLoader
 from ...utils import split_train_test
+from PIL import Image
+import pydicom
+import numpy as np
+import os
 
 def get_collator(processor):
     def collate_fn(batch):
@@ -33,6 +37,14 @@ class CocoDetection(torchvision.datasets.CocoDetection):
         target = encoding["labels"][0]
 
         return pixel_values, target
+    
+    def _load_image(self, id: int) -> Image.Image:
+        path = self.coco.loadImgs(id)[0]["file_name"]
+        if path.endswith(".dicom"):
+            image_array = pydicom.dcmread(path).pixel_array
+            return Image.fromarray(((image_array / np.max(image_array)) * 255).astype(np.uint8)).convert("RGB")
+        else:
+            return Image.open(os.path.join(self.root, path)).convert("RGB")
     
 def get_loader(
     img_folder,

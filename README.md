@@ -7,11 +7,16 @@ pip install git+https://github.com/phuvinhnguyen/MedicalVision.git
 
 # Train and Evaluating DETR
 ```python
-from MedicalVision.Examples.DETR_NIH import run
+from MedicalVision.examples.yolos_nih import run
 
-_, before_training_result, after_training_result = run('MedicalVision/test', token='<YOUR TOKEN>', dataset={})
-
-print(before_training_result)
-
-print(after_training_result)
+run("MedicalVision/yolos_tiny_30ep",
+    token='<YOUR TOKEN>',
+    batch_size=16,
+    dropout_rate=0.1,
+    weight_decay=0.001,
+    max_epochs=30,
+    pull_revision=None,
+    push_revision=None,
+    push_to_hub=True
+   )
 ```

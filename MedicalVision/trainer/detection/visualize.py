@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import torch
 import os
 from PIL import Image
+from copy import deepcopy
 
 def plot_results(pil_img, prediction, ground_truth, id2label=None):
     print(ground_truth)
@@ -44,7 +45,7 @@ def plot_from_dataset(model,
     ground_truth = list(dataset.coco.anns.values())[idx]
     
     image_id = ground_truth['image_id']
-    id2label = model.id2label
+    id2label = {k+1:v for k,v in model.id2label.items()}]
     pixel_values = dataset[0][0].unsqueeze(0).to(device)
 
     ground_truth = {

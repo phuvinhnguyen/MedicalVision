@@ -58,9 +58,10 @@ def run(hf_id,
     initial_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
     trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
 
-    if do_train: trainer.fit()
-    final_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
-    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
+    if do_train:
+        trainer.fit()
+        final_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
+        trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
 
     validation_tracker_epoch = ''
     if trainer.trackers: validation_tracker_epoch = '\n'.join([str(i) for i in trainer.trackers[0].validation_epoch_end])

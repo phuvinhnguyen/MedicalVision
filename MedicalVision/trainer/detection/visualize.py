@@ -44,7 +44,7 @@ def plot_from_dataset(model,
     ground_truth = list(dataset.coco.anns.values())[idx]
     
     image_id = ground_truth['image_id']
-    id2label = {v['id']-1:v['name'] for v in dataset.coco.cats.values()}
+    id2label = model.id2label
     pixel_values = dataset[0][0].unsqueeze(0).to(device)
 
     ground_truth = {

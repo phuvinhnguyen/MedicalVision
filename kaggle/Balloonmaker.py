@@ -1,9 +1,9 @@
-!wget https://github.com/matterport/Mask_RCNN/releases/download/v2.1/balloon_dataset.zip
-!unzip balloon_dataset.zip > /dev/null
+# !wget https://github.com/matterport/Mask_RCNN/releases/download/v2.1/balloon_dataset.zip
+# !unzip balloon_dataset.zip > /dev/null
 
-!git clone https://github.com/woctezuma/VIA2COCO
-%cd VIA2COCO/
-!git checkout fixes
+# !git clone https://github.com/woctezuma/VIA2COCO
+# %cd VIA2COCO/
+# !git checkout fixes
 
 import convert as via2coco
 
@@ -29,4 +29,4 @@ for keyword in ['train', 'val']:
         first_class_index=first_class_index,
     )
 
-%cd ..
+# %cd ..

@@ -34,5 +34,6 @@ class DetectionTrainer(AbstractTrainer):
             self.processor,
             idx=image_idx,
             image_dir=image_dir,
-            threshold=threshold
+            threshold=threshold,
+            device=self.model.device,
         )

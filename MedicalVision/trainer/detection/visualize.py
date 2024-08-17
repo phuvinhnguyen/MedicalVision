@@ -44,20 +44,29 @@ def plot_from_dataset(model,
                       threshold=0.5,
                       device='cuda',
                       ):
-    ground_truth = list(dataset.coco.anns.values())[idx]
+    # ground_truth = list(dataset.coco.anns.values())[idx]
     
-    image_id = ground_truth['image_id']
-    id2label = {k+1:v for k,v in model.id2label.items()}
-    pixel_values = dataset[idx][0].unsqueeze(0).to(device)
+    # image_id = ground_truth['image_id']
+    # id2label = {k+1:v for k,v in model.id2label.items()}
+    # pixel_values = dataset[idx][0].unsqueeze(0).to(device)
 
+    # ground_truth = {
+    #     'bbox': ground_truth['bbox'],
+    #     'category': ground_truth['category_id'],
+    # }
+
+    pixel_values, target = dataset[idx]
+    pixel_values = pixel_values.unsqueeze(0).to(device)
+    image_id = target['image_id']
     ground_truth = {
-        'bbox': ground_truth['bbox'],
-        'category': ground_truth['category_id'],
+        'bbox': target['bbox'],
+        'category': target['category_id'],
     }
+    id2label = {k:v for k,v in model.id2label.items()}
 
     # Prediction
     with torch.no_grad():
-        outputs = model(pixel_values=pixel_values, pixel_mask=None)
+        outputs = model(pixel_values=pixel_values)
 
     # Get image
     image = dataset.coco.loadImgs(image_id)[0]
@@ -70,4 +79,3 @@ def plot_from_dataset(model,
     
     # Visualize
     plot_results(image, results, ground_truth, id2label)
-

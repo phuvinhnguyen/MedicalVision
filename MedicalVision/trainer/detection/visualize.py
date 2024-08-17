@@ -12,8 +12,8 @@ def plot_results(pil_img, prediction, ground_truth, id2label=None):
 
     # Plot ground truth
     for gt in ground_truth:
-        gt_bbox = gt['bbox']
-        gt_category = gt['category']
+        gt_bbox = gt['bbox'].tolist()
+        gt_category = gt['category'].item()
         ax.add_patch(plt.Rectangle(
             (gt_bbox[0], gt_bbox[1]), gt_bbox[2], gt_bbox[3], fill=False, color='green', linewidth=3)
             )

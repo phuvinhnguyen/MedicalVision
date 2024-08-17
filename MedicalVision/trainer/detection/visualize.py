@@ -11,14 +11,15 @@ def plot_results(pil_img, prediction, ground_truth, id2label=None):
     ax = plt.gca()
 
     # Plot ground truth
-    gt_bbox = ground_truth['bbox']
-    gt_category = ground_truth['category']
-    ax.add_patch(plt.Rectangle(
-        (gt_bbox[0], gt_bbox[1]), gt_bbox[2], gt_bbox[3], fill=False, color='green', linewidth=3)
-        )
-    text = f'{id2label[gt_category]}'
-    ax.text(gt_bbox[0], gt_bbox[1], text, fontsize=15,
-            bbox=dict(facecolor='green', alpha=0.5))
+    for gt in ground_truth:
+        gt_bbox = gt['bbox']
+        gt_category = gt['category']
+        ax.add_patch(plt.Rectangle(
+            (gt_bbox[0], gt_bbox[1]), gt_bbox[2], gt_bbox[3], fill=False, color='green', linewidth=3)
+            )
+        text = f'{id2label[gt_category]}'
+        ax.text(gt_bbox[0], gt_bbox[1], text, fontsize=15,
+                bbox=dict(facecolor='green', alpha=0.5))
     
     # Plot prediction
     scores, labels, boxes = prediction['scores'].tolist(), prediction['labels'].tolist(), prediction['boxes'].tolist()
@@ -55,10 +56,10 @@ def plot_from_dataset(model,
     pixel_values, target = dataset[idx]
     pixel_values = pixel_values.unsqueeze(0).to(device)
     image_id = target['image_id']
-    ground_truth = {
-        'bbox': target['bbox'],
-        'category': target['category_id'],
-    }
+    ground_truth = [{
+        'bbox': i['bbox'],
+        'category': i['category_id'],
+    } for i in target]
     id2label = {k:v for k,v in model.id2label.items()}
 
     # Prediction

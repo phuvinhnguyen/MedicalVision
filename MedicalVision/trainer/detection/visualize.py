@@ -12,8 +12,8 @@ def plot_results(pil_img, prediction, ground_truth, id2label=None):
 
     # Plot ground truth
     for gt in ground_truth:
-        gt_bbox = gt['bbox'].tolist()
-        gt_category = gt['category'].item()
+        gt_bbox = gt['bbox']
+        gt_category = gt['category']
         ax.add_patch(plt.Rectangle(
             (gt_bbox[0], gt_bbox[1]), gt_bbox[2], gt_bbox[3], fill=False, color='green', linewidth=3)
             )
@@ -54,21 +54,17 @@ def plot_from_dataset(model,
     # }
 
     pixel_values, target = dataset[idx]
+    image, ground_truth = dataset.__class__.__base__.__getitem__(dataset, idx)
     pixel_values = pixel_values.unsqueeze(0).to(device)
-    image_id = target['image_id'].item()
     ground_truth = [{
-        'bbox': box,
-        'category': label
-    } for box, label in zip(target['boxes'], target['class_labels'])]
+        'bbox': item['bbox'],
+        'category': item['category_id']
+    } for item in target['annotations']]
     id2label = {k:v for k,v in model.id2label.items()}
 
     # Prediction
     with torch.no_grad():
         outputs = model(pixel_values=pixel_values)
-
-    # Get image
-    image = dataset.coco.loadImgs(image_id)[0]
-    image = Image.open(os.path.join(image_dir, image['file_name']))
 
     # Post process
     results = processor.post_process_object_detection(outputs,

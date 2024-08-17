@@ -2,9 +2,6 @@ import matplotlib.pyplot as plt
 import torch
 import os
 from PIL import Image
-from pytorch_grad_cam import GradCAM, HiResCAM, ScoreCAM, GradCAMPlusPlus, AblationCAM, XGradCAM, EigenCAM, FullGrad
-from pytorch_grad_cam.utils.model_targets import DetectorOutputTarget
-from pytorch_grad_cam.utils.image import show_cam_on_image
 
 def plot_results(pil_img, prediction, ground_truth, id2label=None):
     print(ground_truth)

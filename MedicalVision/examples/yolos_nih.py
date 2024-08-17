@@ -5,6 +5,7 @@ import torch
 from ..trainer.detection.detection import DetectionTrainer
 from ..utils.uploadReadme import write_file_in_hf_repo
 from ..utils.model import set_all_params_to_trainable, model_params
+import argparse
 
 def run(hf_id,
         token=None,
@@ -113,3 +114,60 @@ tags: []
             write_file_in_hf_repo(example_path, hf_id, token, revision=push_revision, desfilename='example.png')
 
     return model
+
+def main():
+    parser = argparse.ArgumentParser(description="Run the YOLOS training pipeline")
+
+    parser.add_argument('--hf_id', required=True, help="Hugging Face model ID")
+    parser.add_argument('--token', default=None, help="Hugging Face token")
+    parser.add_argument('--pretrained_model_name_or_path', default='hustvl/yolos-tiny', help="Pretrained model path or name")
+    parser.add_argument('--train_image_path', default='/kaggle/input/nih-detection-dataset/train', help="Path to training images")
+    parser.add_argument('--train_annotations_file', default='/kaggle/input/nih-detection-dataset/annotations/train.json', help="Path to training annotations file")
+    parser.add_argument('--valid_image_path', default='/kaggle/input/nih-detection-dataset/val', help="Path to validation images")
+    parser.add_argument('--valid_annotations_file', default='/kaggle/input/nih-detection-dataset/annotations/val.json', help="Path to validation annotations file")
+    parser.add_argument('--test_image_path', default='/kaggle/input/nih-detection-dataset/val', help="Path to test images")
+    parser.add_argument('--test_annotations_file', default='/kaggle/input/nih-detection-dataset/annotations/val.json', help="Path to test annotations file")
+    parser.add_argument('--max_epochs', type=int, default=100, help="Maximum number of epochs")
+    parser.add_argument('--batch_size', type=int, default=32, help="Batch size")
+    parser.add_argument('--lr', type=float, default=1e-4, help="Learning rate")
+    parser.add_argument('--dropout_rate', type=float, default=0.1, help="Dropout rate")
+    parser.add_argument('--weight_decay', type=float, default=1e-4, help="Weight decay")
+    parser.add_argument('--pull_revision', default=None, help="Revision to pull from Hugging Face")
+    parser.add_argument('--do_train', action='store_true', help="Flag to train the model")
+    parser.add_argument('--push_to_hub', action='store_true', help="Flag to push the model to Hugging Face Hub")
+    parser.add_argument('--train_full', action='store_true', help="Flag to train the full model")
+    parser.add_argument('--push_revision', default=None, help="Revision to push to Hugging Face")
+    parser.add_argument('--example_path', default='/kaggle/working/example.png', help="Path to example image")
+    parser.add_argument('--visualize_threshold', type=float, default=0.1, help="Threshold for visualization")
+    parser.add_argument('--just_visual', action='store_true', help="Flag to only visualize without training")
+    parser.add_argument('--visualize_idx', type=int, default=1, help="Index for visualization")
+
+    args = parser.parse_args()
+
+    run(hf_id=args.hf_id,
+        token=args.token,
+        pretrained_model_name_or_path=args.pretrained_model_name_or_path,
+        train_image_path=args.train_image_path,
+        train_annotations_file=args.train_annotations_file,
+        valid_image_path=args.valid_image_path,
+        valid_annotations_file=args.valid_annotations_file,
+        test_image_path=args.test_image_path,
+        test_annotations_file=args.test_annotations_file,
+        max_epochs=args.max_epochs,
+        batch_size=args.batch_size,
+        lr=args.lr,
+        dropout_rate=args.dropout_rate,
+        weight_decay=args.weight_decay,
+        pull_revision=args.pull_revision,
+        do_train=args.do_train,
+        push_to_hub=args.push_to_hub,
+        train_full=args.train_full,
+        push_revision=args.push_revision,
+        example_path=args.example_path,
+        visualize_threshold=args.visualize_threshold,
+        just_visual=args.just_visual,
+        visualize_idx=args.visualize_idx,
+        )
+
+if __name__ == "__main__":
+    main()

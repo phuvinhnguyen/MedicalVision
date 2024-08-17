@@ -72,38 +72,38 @@ def run(hf_id,
         if trainer.trackers: validation_tracker_epoch = '\n'.join([str(i) for i in trainer.trackers[0].validation_epoch_end])
 
         commit_message = f'''---
-    library_name: transformers
-    tags: []
-    ---
+library_name: transformers
+tags: []
+---
 
-    ## Original result
-    ```
-    {initial_result}```
+## Original result
+```
+{initial_result}```
 
-    ## After training result
-    ```
-    {final_result}```
+## After training result
+```
+{final_result}```
 
-    ## Config
-    - dataset: NIH
-    - original model: {pretrained_model_name_or_path}
-    - lr: {lr}
-    - dropout_rate: {dropout_rate}
-    - weight_decay: {weight_decay}
-    - max_epochs: {max_epochs}
-    - train samples: {len(train_dataset['dataset'][0])}
+## Config
+- dataset: NIH
+- original model: {pretrained_model_name_or_path}
+- lr: {lr}
+- dropout_rate: {dropout_rate}
+- weight_decay: {weight_decay}
+- max_epochs: {max_epochs}
+- train samples: {len(train_dataset['dataset'][0])}
 
-    ## Logging
-    ### Training process
-    ```
-    {validation_tracker_epoch}
-    ```
+## Logging
+### Training process
+```
+{validation_tracker_epoch}
+```
 
-    ## Examples
-    {train_dataset['examples']}
+## Examples
+{train_dataset['examples']}
 
-    ![Example](./example.png)
-    '''
+![Example](./example.png)
+'''
         with open('./README.md', 'w') as wf:
             wf.write(commit_message)
 

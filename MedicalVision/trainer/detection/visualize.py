@@ -56,11 +56,10 @@ def plot_from_dataset(model,
     pixel_values, target = dataset[idx]
     pixel_values = pixel_values.unsqueeze(0).to(device)
     image_id = target['image_id']
-    print(target)
     ground_truth = [{
-        'bbox': i['bbox'],
-        'category': i['category_id'],
-    } for i in target['annotations']]
+        'bbox': box,
+        'category': label
+    } for box, label in zip(target['boxes'], target['class_labels'])]
     id2label = {k:v for k,v in model.id2label.items()}
 
     # Prediction

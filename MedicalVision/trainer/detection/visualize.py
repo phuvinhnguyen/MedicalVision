@@ -60,7 +60,7 @@ def plot_from_dataset(model,
     ground_truth = [{
         'bbox': item['bbox'],
         'category': item['category_id']
-    } for item in ground_truth['annotations']]
+    } for item in ground_truth]
     id2label = {k:v for k,v in model.id2label.items()}
 
     # Prediction

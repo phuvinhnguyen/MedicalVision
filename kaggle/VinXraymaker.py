@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import os
 from tqdm import tqdm
+from ..MedicalVision.utils.spliter import split_train_test
 
 # Load the CSV file
 csv_file = '/kaggle/input/vinbigdata-chest-xray-abnormalities-detection/train.csv'  # Replace with your CSV file path
@@ -74,3 +75,6 @@ for _, row in tqdm(df.iterrows()):
 # Save the COCO JSON structure to a file
 with open(output_json, 'w') as f:
     json.dump(coco, f)
+
+split_train_test(output_json, 'train.json', 'test.json', split=0.8)
+split_train_test('./test.json', 'mini_train.json', 'mini_val.json', split=0.8)

@@ -28,7 +28,7 @@ JUST_VISUAL=${22:-''}
 VISUALIZE_IDX=${23:-1}
 
 # Run the Python program
-python3 your_python_script.py \
+python3 MedicalVision/MedicalVision/examples/yolos_vinxray.py \
     --hf_id $HF_ID \
     --token $TOKEN \
     --pretrained_model_name_or_path $PRETRAINED_MODEL \

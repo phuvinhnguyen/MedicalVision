@@ -1,10 +1,10 @@
-from MedicalVision.MedicalVision.dataset.detection.CocoDataset import get_loader
-from MedicalVision.MedicalVision.models.detection.yolos import Yolos
+from MedicalVision.dataset.detection.CocoDataset import get_loader
+from MedicalVision.models.detection.yolos import Yolos
 from transformers import YolosImageProcessor
 import torch
-from MedicalVision.MedicalVision.trainer.detection.detection import DetectionTrainer
-from MedicalVision.MedicalVision.utils.uploadReadme import write_file_in_hf_repo
-from MedicalVision.MedicalVision.utils.model import set_all_params_to_trainable, model_params
+from MedicalVision.trainer.detection.detection import DetectionTrainer
+from MedicalVision.utils.uploadReadme import write_file_in_hf_repo
+from MedicalVision.utils.model import set_all_params_to_trainable, model_params
 import argparse
 
 def run(hf_id,

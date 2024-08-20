@@ -10,13 +10,12 @@ import argparse
 def run(hf_id,
         token=None,
         pretrained_model_name_or_path='hustvl/yolos-tiny',
-        train_image_path='/kaggle/input/nih-detection-dataset/train',
-        train_annotations_file='/kaggle/input/nih-detection-dataset/annotations/train.json',
-        valid_image_path='/kaggle/input/nih-detection-dataset/val',
-        valid_annotations_file='/kaggle/input/nih-detection-dataset/annotations/val.json',
-        test_image_path='/kaggle/input/nih-detection-dataset/val',
-        test_annotations_file='/kaggle/input/nih-detection-dataset/annotations/val.json',
-        max_epochs=100,
+        train_image_path='/kaggle/input/vinbigdata-chest-xray-abnormalities-detection/train',
+        train_annotations_file='train.json',
+        valid_image_path='/kaggle/input/vinbigdata-chest-xray-abnormalities-detection/train',
+        valid_annotations_file='train.json',
+        test_image_path='/kaggle/input/vinbigdata-chest-xray-abnormalities-detection/test',
+        test_annotations_file='test.json',
         batch_size=32,
         lr=1e-4,
         dropout_rate=0.1,
@@ -121,11 +120,11 @@ def main():
     parser.add_argument('--hf_id', required=True, help="Hugging Face model ID")
     parser.add_argument('--token', default=None, help="Hugging Face token")
     parser.add_argument('--pretrained_model_name_or_path', default='hustvl/yolos-tiny', help="Pretrained model path or name")
-    parser.add_argument('--train_image_path', default='/kaggle/input/nih-detection-dataset/train', help="Path to training images")
+    parser.add_argument('--train_image_path', default='/kaggle/input/vinbigdata-chest-xray-abnormalities-detection/train', help="Path to training images")
     parser.add_argument('--train_annotations_file', default='/kaggle/input/nih-detection-dataset/annotations/train.json', help="Path to training annotations file")
-    parser.add_argument('--valid_image_path', default='/kaggle/input/nih-detection-dataset/val', help="Path to validation images")
+    parser.add_argument('--valid_image_path', default='/kaggle/input/vinbigdata-chest-xray-abnormalities-detection/train', help="Path to validation images")
     parser.add_argument('--valid_annotations_file', default='/kaggle/input/nih-detection-dataset/annotations/val.json', help="Path to validation annotations file")
-    parser.add_argument('--test_image_path', default='/kaggle/input/nih-detection-dataset/val', help="Path to test images")
+    parser.add_argument('--test_image_path', default='/kaggle/input/vinbigdata-chest-xray-abnormalities-detection/train', help="Path to test images")
     parser.add_argument('--test_annotations_file', default='/kaggle/input/nih-detection-dataset/annotations/val.json', help="Path to test annotations file")
     parser.add_argument('--max_epochs', type=int, default=100, help="Maximum number of epochs")
     parser.add_argument('--batch_size', type=int, default=32, help="Batch size")

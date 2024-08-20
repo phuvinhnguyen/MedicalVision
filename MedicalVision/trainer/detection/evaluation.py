@@ -45,8 +45,8 @@ def evaluate_model(
         model,
         processor,
         test_dataloader,
-        test_dataset):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        test_dataset,
+        device='cuda'):
     model = model.to(device)
     evaluator = CocoEvaluator(coco_gt=test_dataset.coco, iou_types=["bbox"])
 

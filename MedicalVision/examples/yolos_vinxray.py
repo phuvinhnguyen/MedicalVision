@@ -86,7 +86,7 @@ tags: []
 {final_result}```
 
 ## Config
-- dataset: NIH
+- dataset: VinXray
 - original model: {pretrained_model_name_or_path}
 - lr: {lr}
 - dropout_rate: {dropout_rate}

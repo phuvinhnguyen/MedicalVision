@@ -24,7 +24,8 @@ class DetectionTrainer(AbstractTrainer):
             self.model,
             self.processor,
             test_dataloader,
-            test_dataset
+            test_dataset,
+            device=self.device
         )
     
     def visualize(self, val_dataset, image_idx=1, image_dir=None, threshold=0.2):

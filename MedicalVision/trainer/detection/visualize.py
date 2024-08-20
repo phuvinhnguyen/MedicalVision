@@ -26,6 +26,7 @@ def plot_results(pil_img, prediction, ground_truth, id2label=None):
     for score, label, (xmin, ymin, xmax, ymax) in zip(scores, labels, boxes):
         ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
                                    fill=False, color='blue', linewidth=1))
+        print(label)
         text = f'{id2label[label]}: {score:0.2f}'
         ax.text(xmin, ymax, text, fontsize=15, bbox=dict(facecolor='yellow', alpha=0.5))
 
@@ -42,17 +43,6 @@ def plot_from_dataset(model,
                       threshold=0.5,
                       device='cuda',
                       ):
-    # ground_truth = list(dataset.coco.anns.values())[idx]
-    
-    # image_id = ground_truth['image_id']
-    # id2label = {k+1:v for k,v in model.id2label.items()}
-    # pixel_values = dataset[idx][0].unsqueeze(0).to(device)
-
-    # ground_truth = {
-    #     'bbox': ground_truth['bbox'],
-    #     'category': ground_truth['category_id'],
-    # }
-
     pixel_values, target = dataset[idx]
     image, ground_truth = dataset.__class__.__base__.__getitem__(dataset, idx)
     pixel_values = pixel_values.unsqueeze(0).to(device)
@@ -62,6 +52,7 @@ def plot_from_dataset(model,
         'category': item['category_id']
     } for item in ground_truth]
     id2label = {k:v for k,v in model.id2label.items()}
+    print(id2label)
 
     # Prediction
     with torch.no_grad():

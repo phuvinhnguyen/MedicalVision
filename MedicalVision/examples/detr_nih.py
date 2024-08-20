@@ -1,10 +1,10 @@
-from MedicalVision.dataset.detection.CocoDataset import get_loader
-from MedicalVision.models.detection.detr import Detr
+from MedicalVision.MedicalVision.dataset.detection.CocoDataset import get_loader
+from MedicalVision.MedicalVision.models.detection.detr import Detr
 from transformers import DetrImageProcessor
 import torch
-from MedicalVision.trainer.detection.detection import DetectionTrainer
-from MedicalVision.utils.uploadReadme import write_file_in_hf_repo
-from MedicalVision.utils.model import set_all_params_to_trainable, model_params
+from MedicalVision.MedicalVision.trainer.detection.detection import DetectionTrainer
+from MedicalVision.MedicalVision.utils.uploadReadme import write_file_in_hf_repo
+from MedicalVision.MedicalVision.utils.model import set_all_params_to_trainable, model_params
 import argparse
 
 def run(hf_id,

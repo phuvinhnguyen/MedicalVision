@@ -33,7 +33,6 @@ class DetectionTrainer(AbstractTrainer):
             val_dataset,
             self.processor,
             idx=image_idx,
-            image_dir=image_dir,
             threshold=threshold,
             device=self.model.device,
         )

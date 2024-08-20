@@ -39,7 +39,6 @@ def plot_from_dataset(model,
                       dataset,
                       processor,
                       idx=1,
-                      image_dir=None,
                       threshold=0.5,
                       device='cuda',
                       ):

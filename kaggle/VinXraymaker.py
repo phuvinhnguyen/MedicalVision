@@ -51,7 +51,7 @@ for _, row in tqdm(df.iterrows()):
     class_name = row['class_name']
     if class_id not in category_map:
         category_info = {
-            "id": class_id,
+            "id": class_id+1,
             "name": class_name,
             "supercategory": "none"
         }

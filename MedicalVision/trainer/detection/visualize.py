@@ -6,6 +6,7 @@ from PIL import Image
 def plot_results(pil_img, prediction, ground_truth, id2label=None):
     plt.figure(figsize=(16, 10))
     plt.imshow(pil_img)
+    pil_img.save('original.png', format='PNG')
     ax = plt.gca()
 
     # Plot ground truth

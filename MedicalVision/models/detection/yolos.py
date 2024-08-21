@@ -4,9 +4,19 @@ from ...utils.model import change_dropout_rate
 import cv2
 import matplotlib.pyplot as plt
 from PIL import Image, ImageFilter
+import os
 import torch
 import numpy as np
 from torch import nn
+
+def tree_image(dictionary, path_name):
+    if isinstance(dictionary, list):
+        for i, image in enumerate(dictionary):
+            os.makedirs(path_name, exist_ok=True)
+            image.save(os.path.join(path_name, str(i) + ".png"))    
+    else:
+        for key, value in dictionary.items():
+            tree_image(value, os.path.join(path_name, key))
 
 def convert_to_heatmap(grayscale_array, colormap='viridis'):
     normalized_array = (grayscale_array - grayscale_array.min()) / (grayscale_array.max() - grayscale_array.min())
@@ -104,6 +114,7 @@ class Yolos(lightning_detection):
             with_image=False,
             with_bbox=True,
             with_smooth=False,
+            save_folder_name=None
             ):
         pixel_values = self.extractor(image, return_tensors="pt").pixel_values
         h, w = pixel_values.shape[2:]
@@ -155,5 +166,8 @@ class Yolos(lightning_detection):
                         grad_results[l][la][head] = [Image.fromarray(attn_image)]
                     else:
                         grad_results[l][la][head].append(Image.fromarray(attn_image))
+
+        if save_folder_name is not None:
+            tree_image(grad_results, save_folder_name)
 
         return grad_results

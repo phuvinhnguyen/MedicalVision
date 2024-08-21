@@ -33,6 +33,8 @@ def run(hf_id,
         ):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+    print(f'Running device: {device}')
+
     processor = YolosImageProcessor.from_pretrained(pretrained_model_name_or_path)
     train_dataset = get_loader(train_image_path, processor, annotations_file=train_annotations_file, batch_size=batch_size)
     valid_dataset = get_loader(valid_image_path, processor, annotations_file=valid_annotations_file, batch_size=batch_size)

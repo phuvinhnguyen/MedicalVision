@@ -25,7 +25,6 @@ def plot_results(pil_img, prediction, ground_truth, id2label=None):
     for score, label, (xmin, ymin, xmax, ymax) in zip(scores, labels, boxes):
         ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
                                    fill=False, color='blue', linewidth=1))
-        print(label)
         text = f'{id2label[label]}: {score:0.2f}'
         ax.text(xmin, ymax, text, fontsize=15, bbox=dict(facecolor='yellow', alpha=0.5))
 

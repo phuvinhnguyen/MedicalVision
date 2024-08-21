@@ -36,6 +36,7 @@ class CocoDetection(torchvision.datasets.CocoDetection):
         pixel_values = encoding["pixel_values"].squeeze()
         target = encoding["labels"][0]
 
+        print(pixel_values, pixel_values.shape)
         return pixel_values, target
     
     def _load_image(self, id: int) -> Image.Image:

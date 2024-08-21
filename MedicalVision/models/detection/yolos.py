@@ -59,12 +59,19 @@ class Yolos(lightning_detection):
         super().__init__(*args, **kwargs)
         
     def _init_model(self, model_name, revision):
-        self.model = YolosForObjectDetection.from_pretrained(
-            model_name,
-            revision=revision,
-            num_labels=len(self.id2label),
-            ignore_mismatched_sizes=True,
-        ).to(self.device)
+        if len(self.id2label) == 0:
+            self.model = YolosForObjectDetection.from_pretrained(
+                model_name,
+                revision=revision,
+            )
+        else:
+            self.model = YolosForObjectDetection.from_pretrained(
+                model_name,
+                revision=revision,
+                num_labels=len(self.id2label),
+                ignore_mismatched_sizes=True,
+            ).to(self.device)
+            self.model.config.id2label = self.id2label
         self.extractor = YolosFeatureExtractor.from_pretrained(
             model_name,
             revision=revision,

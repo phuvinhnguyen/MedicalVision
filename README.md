@@ -14,7 +14,7 @@ python MedicalVision/MedicalVision/examples/yolos_vinxray.py \
 --hf_id MedicalVision/test_model \
 --token <YOUR TOKEN> \
 --batch_size 32 \
---max_epochs 100 \
+--max_epochs 30 \
 --push_to_hub \
 --do_train \
 --train_full \

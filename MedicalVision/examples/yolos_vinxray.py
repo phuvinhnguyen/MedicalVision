@@ -26,7 +26,7 @@ def run(hf_id,
         push_to_hub=False,
         train_full=True,
         push_revision=None,
-        example_path='/kaggle/working/example.png',
+        example_path='./example.png',
         visualize_threshold=0.1,
         just_visual=False,
         visualize_idx=1,
@@ -62,15 +62,14 @@ def run(hf_id,
         trainer.visualize(train_dataset['dataset'][0], image_idx=visualize_idx, image_dir=train_image_path, threshold=visualize_threshold)
         return model
 
-    initial_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
+    initial_result = 'Not provided' # trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
     print(initial_result)
-    trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
 
     if do_train:
         print('Begin training...')
         trainer.fit()
         final_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
-        trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
+        trainer.visualize(train_dataset['dataset'][0], image_idx=visualize_idx, image_dir=train_image_path, threshold=visualize_threshold)
 
         validation_tracker_epoch = ''
         if trainer.trackers: validation_tracker_epoch = '\n'.join([str(i) for i in trainer.trackers[0].validation_epoch_end])

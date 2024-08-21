@@ -41,7 +41,7 @@ def rescale_bboxes(out_bbox, size):
     return b
 
 def draw_bbox_in_img(model, im, bbox_scaled, score, color=[0,255,0]):
-    tl = 3
+    tl = 1
     tf = max(tl-1,1)
     for p, (xmin, ymin, xmax, ymax) in zip(score, bbox_scaled.tolist()):
         c1, c2 = (int(xmin), int(ymin)), (int(xmax), int(ymax))
@@ -137,7 +137,7 @@ class Yolos(lightning_detection):
 
                     if with_smooth:
                         attn_image = Image.fromarray(attn_image)
-                        attn_image = np.array(attn_image.filter(ImageFilter.GaussianBlur(radius=3)))
+                        attn_image = np.array(attn_image.filter(ImageFilter.GaussianBlur(radius=13)))
 
                     if with_bbox:
                         attn_image = draw_bbox_in_img(self.model, attn_image, bbox, score, color=[0,0,255])

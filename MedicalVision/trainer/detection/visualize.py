@@ -4,8 +4,6 @@ import os
 from PIL import Image
 
 def plot_results(pil_img, prediction, ground_truth, id2label=None):
-    print(ground_truth)
-
     plt.figure(figsize=(16, 10))
     plt.imshow(pil_img)
     ax = plt.gca()
@@ -43,6 +41,7 @@ def plot_from_dataset(model,
                       device='cuda',
                       ):
     pixel_values, target = dataset[idx]
+    print(target)
     image, ground_truth = dataset.__class__.__base__.__getitem__(dataset, idx)
     pixel_values = pixel_values.unsqueeze(0).to(device)
     ground_truth = [{

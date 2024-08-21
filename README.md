@@ -35,7 +35,7 @@ image = Image.open('./<some_image>.jpeg')
 model = Yolos(None, None, model_name='hustvl/yolos-tiny', revision=None, id2label=[1]*92)
 model.model = YolosForObjectDetection.from_pretrained('hustvl/yolos-tiny')
 
-attention_map = model.run(image, threshold=0.1)
+attention_map = model.run(image, threshold=0.1, with_bbox=True, with_image=True, with_smooth=True)
 
 attention_map # Appear as a dict of categories and images
 ```

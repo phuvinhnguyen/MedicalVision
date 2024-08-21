@@ -65,6 +65,7 @@ def run(hf_id,
     trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
 
     if do_train:
+        print('Begin training...')
         trainer.fit()
         final_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
         trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)

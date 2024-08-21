@@ -50,8 +50,6 @@ def plot_from_dataset(model,
     } for item in ground_truth]
     id2label = {k:v for k,v in model.id2label.items()}
 
-    print(pixel_values, pixel_values.shape)
-
     # Prediction
     with torch.no_grad():
         outputs = model(pixel_values=pixel_values)

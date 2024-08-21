@@ -72,6 +72,3 @@ def test_and_visualize_model(
     # Plot the results
     print(results)
     plot_results(image, results['scores'], results['labels'], results['boxes'])
-
-# Example usage:
-# test_and_visualize_model(val_dataset, model, processor, image_idx=1, image_dir='/path/to/images', threshold=0.9, device='cuda')

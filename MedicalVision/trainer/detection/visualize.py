@@ -42,7 +42,6 @@ def plot_from_dataset(model,
                       device='cuda',
                       ):
     pixel_values, target = dataset[idx]
-    print(target)
     image, ground_truth = dataset.__class__.__base__.__getitem__(dataset, idx)
     pixel_values = pixel_values.unsqueeze(0).to(device)
     ground_truth = [{
@@ -50,6 +49,8 @@ def plot_from_dataset(model,
         'category': item['category_id']
     } for item in ground_truth]
     id2label = {k:v for k,v in model.id2label.items()}
+
+    print(pixel_values, pixel_values.shape)
 
     # Prediction
     with torch.no_grad():

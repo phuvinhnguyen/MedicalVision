@@ -3,7 +3,7 @@ from .lightning import lightning_detection
 from ...utils.model import change_dropout_rate
 import cv2
 import matplotlib.pyplot as plt
-from PIL import Image
+from PIL import Image, ImageFilter
 import torch
 import numpy as np
 from torch import nn
@@ -94,6 +94,9 @@ class Yolos(lightning_detection):
             image,
             threshold=0.9,
             layers=[0,1,2,3,4,5,6,7,8,9,10,11],
+            with_image=False,
+            with_bbox=True,
+            with_smooth=False,
             ):
         pixel_values = self.extractor(image, return_tensors="pt").pixel_values
         h, w = pixel_values.shape[2:]
@@ -123,8 +126,18 @@ class Yolos(lightning_detection):
                 for j in range(nh):
                     attn_map = (attn[j] - attn[j].min()) / (attn[j].max() - attn[j].min())
                     attention_normalized = (attn_map * 255).astype(np.uint8)
-                    attention_normalized = convert_to_heatmap(attention_normalized)
-                    attn_image = draw_bbox_in_img(self.model, attention_normalized, bbox, score, color=[0,0,255])
+                    attn_image = convert_to_heatmap(attention_normalized)
+
+                    if with_smooth:
+                        attn_image = Image.fromarray(attn_image)
+                        attn_image = np.array(attn_image.filter(ImageFilter.GaussianBlur(radius=3)))
+
+                    if with_bbox:
+                        attn_image = draw_bbox_in_img(self.model, attn_image, bbox, score, color=[0,0,255])
+
+                    if with_image:
+                        attn_image = Image.fromarray(attn_image)
+                        attn_image = np.array(Image.blend(image, attn_image.resize(image.size), alpha=0.7))
 
                     l, la, head = f'l{layer}', f'la{vis_index}', f'h{j}'
                     if l not in grad_results:
@@ -137,4 +150,3 @@ class Yolos(lightning_detection):
                         grad_results[l][la][head].append(Image.fromarray(attn_image))
 
         return grad_results
-            

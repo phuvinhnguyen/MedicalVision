@@ -137,7 +137,7 @@ def main():
     parser.add_argument('--push_to_hub', action='store_true', help="Flag to push the model to Hugging Face Hub")
     parser.add_argument('--train_full', action='store_true', help="Flag to train the full model")
     parser.add_argument('--push_revision', default=None, help="Revision to push to Hugging Face")
-    parser.add_argument('--example_path', default='/kaggle/working/example.png', help="Path to example image")
+    parser.add_argument('--example_path', default='./example.png', help="Path to example image")
     parser.add_argument('--visualize_threshold', type=float, default=0.1, help="Threshold for visualization")
     parser.add_argument('--just_visual', action='store_true', help="Flag to only visualize without training")
     parser.add_argument('--visualize_idx', type=int, default=1, help="Index for visualization")

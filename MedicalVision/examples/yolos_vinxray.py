@@ -62,7 +62,7 @@ def run(hf_id,
         trainer.visualize(train_dataset['dataset'][0], image_idx=visualize_idx, image_dir=train_image_path, threshold=visualize_threshold)
         return model
 
-    initial_result = 'Not provided' # trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
+    initial_result = 'Not provided\n' # trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
     print(initial_result)
 
     if do_train:

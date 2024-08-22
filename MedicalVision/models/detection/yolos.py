@@ -82,6 +82,7 @@ class Yolos(lightning_detection):
                 ignore_mismatched_sizes=True,
             ).to(self.device)
             self.model.config.id2label = self.id2label
+            self.model.config.label2id = {v: k for k, v in self.id2label.items()}
         self.extractor = YolosFeatureExtractor.from_pretrained(
             model_name,
             revision=revision,

@@ -30,6 +30,7 @@ def run(hf_id,
         visualize_threshold=0.1,
         just_visual=False,
         visualize_idx=1,
+        checkpoint_path='./yolos_nih_ckpt.pt',
         ):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -54,7 +55,7 @@ def run(hf_id,
 
     model_params(model)
 
-    trainer = DetectionTrainer(model, processor, max_epochs=max_epochs, device=device)
+    trainer = DetectionTrainer(model, processor, max_epochs=max_epochs, device=device, save_path=checkpoint_path)
 
     if just_visual:
         trainer.visualize(train_dataset['dataset'][0], image_idx=visualize_idx, image_dir=train_image_path, threshold=visualize_threshold)

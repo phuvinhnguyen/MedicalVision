@@ -23,7 +23,7 @@ class DetectionTrainer(AbstractTrainer):
             trainer = Trainer(max_epochs=self.max_epochs, callbacks=self.trackers, logger=WandbLogger(project=wandb_project))
         else:
             trainer = Trainer(max_epochs=self.max_epochs, callbacks=self.trackers)
-        trainer.fit(model=self.model, ckpt_path=self.save_path)
+        trainer.fit(model=self.model) #, ckpt_path=self.save_path)
 
     def test(self, test_dataloader, test_dataset):
         return evaluate_model(

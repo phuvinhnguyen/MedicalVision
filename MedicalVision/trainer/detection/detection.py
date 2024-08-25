@@ -5,6 +5,7 @@ from .evaluation import *
 from ..abstract import AbstractTrainer
 from lightning.pytorch.loggers import WandbLogger
 import wandb
+from pytorch_lightning.callbacks import ModelCheckpoint
 
 class DetectionTrainer(AbstractTrainer):
     def __init__(self,
@@ -14,7 +15,14 @@ class DetectionTrainer(AbstractTrainer):
                  save_path: str=None,
                  device='cuda',
                  ) -> None:
-        super().__init__(model, processor, save_path, device, trackers=[MetricTracker()])
+        checkpoint_callback = ModelCheckpoint(
+            dirpath="checkpoints/",
+            filename="{epoch:02d}-{val_loss:.2f}",
+            save_top_k=1,
+            every_n_epochs=1,
+            verbose=True,
+        )
+        super().__init__(model, processor, save_path, device, trackers=[MetricTracker(), checkpoint_callback])
         self.max_epochs = max_epochs
 
     def fit(self, wandb_key=None, wandb_project='XrayImageDetection'):
@@ -23,7 +31,7 @@ class DetectionTrainer(AbstractTrainer):
             trainer = Trainer(max_epochs=self.max_epochs, callbacks=self.trackers, logger=WandbLogger(project=wandb_project))
         else:
             trainer = Trainer(max_epochs=self.max_epochs, callbacks=self.trackers)
-        trainer.fit(model=self.model) #, ckpt_path=self.save_path)
+        trainer.fit(model=self.model)
 
     def test(self, test_dataloader, test_dataset):
         return evaluate_model(

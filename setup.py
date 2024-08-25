@@ -19,6 +19,7 @@ setup(
         "lightning>=2.3.3",
         "coco-eval",
         "funcy",
+        "wandb",
     ],
     package_data={
         'MedicalVision': ['preprocess/*'],

@@ -31,6 +31,8 @@ def run(hf_id,
         just_visual=False,
         visualize_idx=1,
         checkpoint_path='./yolos_nih_ckpt.pt',
+        wandb_key=None,
+        wandb_project='XrayImageDetection',
         ):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -67,7 +69,7 @@ def run(hf_id,
 
     if do_train:
         print('Begin training...')
-        trainer.fit()
+        trainer.fit(wandb_key=wandb_key, wandb_project=wandb_project)
         final_result = trainer.test(test_dataset['dataloader'][0], test_dataset['dataset'][0])
         trainer.visualize(train_dataset['dataset'][0], image_dir=train_image_path, threshold=visualize_threshold)
 

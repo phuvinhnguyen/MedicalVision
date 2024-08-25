@@ -3,6 +3,8 @@ from .visualize import plot_from_dataset
 from .tracker import MetricTracker
 from .evaluation import *
 from ..abstract import AbstractTrainer
+from lightning.pytorch.loggers import WandbLogger
+import wandb
 
 class DetectionTrainer(AbstractTrainer):
     def __init__(self,
@@ -15,8 +17,12 @@ class DetectionTrainer(AbstractTrainer):
         super().__init__(model, processor, save_path, device, trackers=[MetricTracker()])
         self.max_epochs = max_epochs
 
-    def fit(self):
-        trainer = Trainer(max_epochs=self.max_epochs, callbacks=self.trackers)
+    def fit(self, wandb_key=None, wandb_project='XrayImageDetection'):
+        if wandb_key is not None:
+            wandb.login(key=wandb_key)
+            trainer = Trainer(max_epochs=self.max_epochs, callbacks=self.trackers, logger=WandbLogger(project=wandb_project))
+        else:
+            trainer = Trainer(max_epochs=self.max_epochs, callbacks=self.trackers)
         trainer.fit(model=self.model, ckpt_path=self.save_path)
 
     def test(self, test_dataloader, test_dataset):

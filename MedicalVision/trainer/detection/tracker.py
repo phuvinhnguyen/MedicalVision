@@ -37,5 +37,3 @@ class MetricTracker(Callback):
     def on_train_epoch_end(self, trainer, pl_module) -> None:
         elogs = trainer.logged_metrics
         self.training_epoch_end.append(deepcopy(elogs))
-
-

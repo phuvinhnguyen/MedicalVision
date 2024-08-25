@@ -145,6 +145,7 @@ def main():
     parser.add_argument('--visualize_threshold', type=float, default=0.1, help="Threshold for visualization")
     parser.add_argument('--just_visual', action='store_true', help="Flag to only visualize without training")
     parser.add_argument('--visualize_idx', type=int, default=1, help="Index for visualization")
+    parser.add_argument('--checkpoint_path', default=None, help="Path to checkpoint")
     parser.add_argument('--wandb_key', default=None, help="Wandb key")
     parser.add_argument('--wandb_project', default=None, help="Wandb project")
 
@@ -173,6 +174,7 @@ def main():
         visualize_threshold=args.visualize_threshold,
         just_visual=args.just_visual,
         visualize_idx=args.visualize_idx,
+        checkpoint_path=args.checkpoint_path,
         wandb_key=args.wandb_key,
         wandb_project=args.wandb_project
         )

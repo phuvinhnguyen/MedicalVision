@@ -1,4 +1,4 @@
-from transformers import YolosForObjectDetection, YolosFeatureExtractor
+from transformers import YolosForObjectDetection, YolosFeatureExtractor, YolosConfig
 from .lightning import lightning_detection
 from ...utils.model import change_dropout_rate
 import cv2
@@ -70,11 +70,13 @@ class Yolos(lightning_detection):
         
     def _init_model(self, model_name, revision):
         if len(self.id2label) == 0:
+            config = YolosConfig.from_pretrained(model_name, revision=revision)
+            config._attn_implementation = "eager"
             self.model = YolosForObjectDetection.from_pretrained(
                 model_name,
                 revision=revision,
+                config=config,
             )
-            self.model.config._attn_implementation = "eager"
         else:
             self.model = YolosForObjectDetection.from_pretrained(
                 model_name,

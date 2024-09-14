@@ -78,13 +78,15 @@ class Yolos(lightning_detection):
                 config=config,
             )
         else:
+            config = YolosConfig.from_pretrained(model_name, revision=revision)
+            config._attn_implementation = "eager"
             self.model = YolosForObjectDetection.from_pretrained(
                 model_name,
                 revision=revision,
                 num_labels=len(self.id2label),
                 ignore_mismatched_sizes=True,
+                config=config,
             ).to(self.device)
-            self.model.config._attn_implementation = "eager"
             self.model.config.id2label = self.id2label
             self.model.config.label2id = {v: k for k, v in self.id2label.items()}
         self.extractor = YolosFeatureExtractor.from_pretrained(

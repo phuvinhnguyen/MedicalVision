@@ -20,6 +20,7 @@ setup(
         "coco-eval",
         "funcy",
         "wandb",
+        "transformers==4.41.2",
     ],
     package_data={
         'MedicalVision': ['preprocess/*'],

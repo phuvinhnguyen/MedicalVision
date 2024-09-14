@@ -9,7 +9,7 @@ class lightning_detection(pl.LightningModule):
     def __init__(self,
                  train_dataloader,
                  eval_dataloader,
-                 id2label=None,
+                 id2label=[],
                  lr=5e-5,
                  lr_backbone=None,
                  weight_decay=1e-4,
